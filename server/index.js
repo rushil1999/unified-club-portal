@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import clubRouter from './routes/club';
+import authRouter from './routes/auth';
 import bodyParser from 'body-parser';
 
 const app = express();
@@ -32,5 +33,6 @@ mongoose.set('useFindAndModify', false);
 //setting primary routes
 app.use('/clubs', clubRouter);
 app.use('/club', clubRouter);
+app.use('/auth', authRouter);
 
 
