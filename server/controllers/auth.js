@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createJWT } from '../services/authenticationService';
+import { createJWT, verifyToken } from '../services/authenticationService';
 
 export const signup = async (req, res) => {
   let { name, email, password, contact } = req.body;
@@ -49,10 +49,7 @@ export const signin = async (req, res) => {
   try {
     const user = await User.findOne({ email: email });
     if (user) {   
-      console.log('User', user);
       const { password: oldPassword } = user; 
-      console.log('Password', password);
-      console.log('Old Password', user['password']);
       bcrypt.compare(password, user['password'], (err, result) => {
         if (err) {
           console.log('Password does not match', err.message);
@@ -64,19 +61,19 @@ export const signin = async (req, res) => {
             user._id,
             3600
           );
-          jwt.verify(access_token, 'rushil1999', (err,
-            decoded) => {
-            if (err) {
-              res.status(500).json({ erros: err });
-            }
-            if (decoded) {
-              return res.status(200).json({
-                success: true,
-                token: access_token,
-                message: user
+          const tokenVerified = verifyToken(access_token);
+          if(tokenVerified){
+            res.status(200).json({
+                 success: true,
+                 token: access_token,
+                 message: user
               });
-            }
-          });
+          }
+          else{
+            res.status(401).json({
+              errors: ['Unauthorized User']
+            });
+          }
         }
       });
     }
@@ -89,38 +86,3 @@ export const signin = async (req, res) => {
   }
 }
 
-
-  // User.findOne({email: email})
-  //  .then(user=>{
-  //     if(user){
-  //        return res.status(422).json({ errors: [{ user: "email already exists" }] });
-  //     }else {
-  //        const user = new User({
-  //          name: name,
-  //          email: email,
-  //          password: password,
-  //        });
-  //        bcrypt.genSalt(10, function(err, salt) { bcrypt.hash(password, salt, function(err, hash) {
-  //        if (err) throw err;
-  //        user.password = hash;
-  //        user.save()
-  //            .then(response => {
-  //               res.status(200).json({
-  //                 success: true,
-  //                 result: response
-  //               })
-  //            })
-  //            .catch(err => {
-  //              res.status(500).json({
-  //                 errors: [{ error: err }]
-  //              });
-  //           });
-  //        });
-  //     });
-  //    }
-  // }).catch(err =>{
-  //     res.status(500).json({
-  //       errors: [{ error: 'Something went wrong' }]
-  //     });
-  // })
-// }

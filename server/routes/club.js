@@ -1,10 +1,11 @@
 import express from 'express';
 import { getClubList, saveClub } from '../controllers/club';
+import { checkUserAccess } from '../services/authenticationService';
 
 const router = express.Router();
 
-router.get('/', getClubList);
-router.post('/', saveClub);
-router.put('/', saveClub);
+router.get('/', checkUserAccess, getClubList);
+router.post('/', checkUserAccess, saveClub);
+router.put('/', checkUserAccess, saveClub);
 
 export default router;
