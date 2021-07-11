@@ -12,6 +12,17 @@ export const getClubList = async (req, res) => {
   } 
 };
 
+export const getClubInfo = async (req, res) => {
+  try{
+    const clubId = req.params.id;
+    const club = await Club.findById(clubId).exec();
+    res.status(200).send(club);
+  } 
+  catch(err) {
+    res.status(500).json({errors: [err.message]});
+  } 
+};
+
 export const saveClub = async (req, res) => {
   let club;
   try{
