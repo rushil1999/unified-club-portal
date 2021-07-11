@@ -28,7 +28,6 @@ export const checkUserAccess = (req,res, next) => {
 
 export const verifyToken = (accessToken) => {
    let accessGranted;
-   console.log('DOTENV WORKSSSS', process.env.TOKEN_SECRET);
    jwt.verify(accessToken, process.env.TOKEN_SECRET, (err,
       decoded) => {
       if (err) {

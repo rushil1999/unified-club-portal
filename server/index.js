@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import clubRouter from './routes/club';
-import authRouter from './routes/auth';
+import clubRouter from './routes/clubRoutes';
+import authRouter from './routes/authRoutes';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 

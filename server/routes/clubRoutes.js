@@ -1,5 +1,5 @@
 import express from 'express';
-import { getClubList, saveClub } from '../controllers/club';
+import { getClubList, saveClub } from '../controllers/clubController';
 import { checkUserAccess } from '../services/authenticationService';
 
 const router = express.Router();
