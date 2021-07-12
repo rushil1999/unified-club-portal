@@ -24,11 +24,12 @@ export const signup = async (req, res) => {
         .then(async hash => {
           newUser.password = hash;
           const savedUser = await newUser.save();
+          console.log(savedUser);
           if (savedUser) {
-            res.status(201).json({ user: user })
+            res.status(201).json({ user: savedUser });
           }
           else {
-            res.status(500);
+            res.status(500).json({errors: ['Error Creating New User']});
           }
         })
         .catch(err => {
