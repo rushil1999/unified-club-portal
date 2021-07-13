@@ -1,16 +1,26 @@
 import './App.css';
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import SignUp from './components/SignUp';
+import SignUp from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
+import SignIn from './pages/SignIn';
+import  ProvideAuth  from './components/auth/ProvideAuth';
+import PrivateRoute from './components/auth/PrivateRoute';
 
 function App() {
+  console.log('Main');
   return (
+    
     <div className="App">
-      <Router>
-        <Switch>
-          <Route path='/signup' exact component={SignUp}></Route>
-        </Switch>
-      </Router>
+      <ProvideAuth>
+        <Router>
+          <Switch>
+            <Route path='/signup' exact component={SignUp}></Route>
+            <Route path='/signin' exact component={SignIn}></Route>
+            <PrivateRoute path='/dashboard' exact component={Dashboard}></PrivateRoute>
+          </Switch>
+        </Router>
+      </ProvideAuth>
       
     </div>
   );

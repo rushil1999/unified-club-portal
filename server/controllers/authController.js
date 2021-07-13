@@ -6,6 +6,7 @@ import { createJWT, verifyToken } from '../services/authenticationService';
 
 export const signup = async (req, res) => {
   let { name, email, password, contact } = req.body;
+  console.log('Request Body', req.body);
   try {
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
@@ -85,5 +86,21 @@ export const signin = async (req, res) => {
   catch (err) {
     res.status(500).json({errors:[err.message]});
   }
+}
+
+export const checkTokenValidation = (req, res) => {
+  const { token } = req.params;
+  const tokenVerified = verifyToken(token);
+    if(tokenVerified){
+      res.status(200).json({
+            success: true,
+            token,
+        });
+    }
+    else{
+      res.status(401).json({
+        errors: ['Unauthorized User']
+      });
+    }
 }
 

@@ -4,6 +4,7 @@ import clubRouter from './routes/clubRoutes';
 import authRouter from './routes/authRoutes';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 const result = dotenv.config()
 
@@ -20,6 +21,9 @@ const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
+
+//For CORS
+app.use(cors());
 
 //using boody-parser to parse incoming request bodies
 app.use(bodyParser.json());
