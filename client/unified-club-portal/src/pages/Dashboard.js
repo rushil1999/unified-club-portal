@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,11 +16,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PersonIcon from '@material-ui/icons/Person';
 import { mainListItems, secondaryListItems } from '../services/listItems';
-import { AuthContext } from '../components/auth/ProvideAuth';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 function Copyright() {
   return (
@@ -119,19 +114,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [userSelectOpen, setUserSelectOpen] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-  const handleUserSelectClose = () => {
-    setOpen(false);
-  };
-
-  const handleUserSelectOpen = () => {
-    setOpen(true);
   };
   const userObj = window.localStorage.getItem('user');
   const user = JSON.parse(userObj);
