@@ -6,6 +6,9 @@ import Dashboard from './pages/Dashboard';
 import SignIn from './pages/SignIn';
 import  ProvideAuth  from './components/auth/ProvideAuth';
 import PrivateRoute from './components/auth/PrivateRoute';
+import ClubGrid from './pages/ClubGrid';
+import ClubForm from './pages/ClubForm';
+import ClubData from './pages/ClubData';
 
 function App() {
   console.log('Main');
@@ -13,14 +16,18 @@ function App() {
     
     <div className="App">
       <ProvideAuth>
-        <Router>
+      <Router>
           <Switch>
             <Route path='/signup' exact component={SignUp}></Route>
             <Route path='/signin' exact component={SignIn}></Route>
             <PrivateRoute path='/dashboard' exact component={Dashboard}></PrivateRoute>
+            <PrivateRoute path='/clubs' exact component={ClubGrid}></PrivateRoute>
+            <PrivateRoute path='/club/new' exact component={ClubForm}></PrivateRoute>
+            <PrivateRoute path='/club/:id' exact component={ClubData}></PrivateRoute>
           </Switch>
         </Router>
       </ProvideAuth>
+
       
     </div>
   );

@@ -1,12 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import { AuthContext } from './ProvideAuth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const PrivateRoute = ({ children, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
   const contextValue = useContext(AuthContext);
   console.log(contextValue);
-  console.log(children);
   return (
     <div>
 
@@ -14,7 +13,7 @@ const PrivateRoute = ({ children, ...rest }) => {
         {...rest}
         render={({ location }) =>
           contextValue.authenticated ? (
-            children
+            <Component></Component>
           ) : (
             <Redirect
               to={{

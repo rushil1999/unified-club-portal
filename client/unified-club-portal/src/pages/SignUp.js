@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import { SIGNUP_URL } from '../services/constants';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../components/auth/ProvideAuth';
 
 function Copyright() {
   return (
@@ -50,6 +51,9 @@ export default function SignUp() {
   const history = useHistory();
   const classes = useStyles();
 
+  const contextValue = useContext(AuthContext);
+  const { setAuthState } = contextValue;
+
   const [userState, setUserState] = useState({
     name: '',
     email: '',
@@ -65,9 +69,7 @@ export default function SignUp() {
 
   const formSubmitHandler = async event => {
     event.preventDefault();
-    console.log(SIGNUP_URL);
     //TODO: validate Sign Up Object;
-    console.log(userState);
     const apiParams = {
       method: 'POST',
       headers: {
@@ -82,10 +84,12 @@ export default function SignUp() {
       window.alert('User Creation Failed');
     }
     else{
-      console.log(await response.json());
+      const resp = await response.json(); 
+      window.localStorage.setItem('user', JSON.stringify(resp.user));
+      setAuthState(true);
       window.alert('User Creation Successfull');
       setTimeout(()=>{
-        history.push('/signin');
+        history.push('/dashboard');
       }, 500);
     }
   }

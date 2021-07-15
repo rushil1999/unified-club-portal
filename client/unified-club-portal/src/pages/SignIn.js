@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import { SIGNIN_URL } from '../services/constants';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../components/auth/ProvideAuth';
 
 function Copyright() {
   return (
@@ -48,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const history = useHistory();
+  const contextValue = useContext(AuthContext);
+  const { setAuthState, setUser } = contextValue;
   const classes = useStyles();
   const [credentialState, setCredentialState] = useState({
     email: '',
@@ -78,8 +81,11 @@ export default function SignIn() {
     else{
       const resp = await response.json();
       console.log(resp);
-      window.alert('Login Successfull');
       window.localStorage.setItem('token', resp.token);
+
+      //Need to figure out a solution, not sure if its good idea to store the user in local storage
+      window.localStorage.setItem('user', JSON.stringify(resp.user));
+      setAuthState(true);
       setTimeout(()=>{
         history.push('/dashboard');
       }, 500);

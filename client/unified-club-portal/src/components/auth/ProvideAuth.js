@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { VERIFY_TOKEN } from "../../services/constants";
 
 export const AuthContext =  createContext();
 
 
 const ProvideAuth = ({ children }) => {
-  console.log('HEYYYYY');
   const [authState, setAuthState] = useState(null);
   const [loading, setLoading]=useState(true);
+  const [user, setUser] = useState(null);
 
   const getAuthentication = async () => {
     const token = window.localStorage.getItem('token');
@@ -27,7 +27,7 @@ const ProvideAuth = ({ children }) => {
   },[]);
   
   return (
-    <AuthContext.Provider value={{authenticated: authState, loading}}>
+    <AuthContext.Provider value={{authenticated: authState, loading, setAuthState, user, setUser}}>
       {children}
     </AuthContext.Provider>
   );

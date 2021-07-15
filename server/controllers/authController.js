@@ -27,7 +27,24 @@ export const signup = async (req, res) => {
           const savedUser = await newUser.save();
           console.log(savedUser);
           if (savedUser) {
-            res.status(201).json({ user: savedUser });
+            let access_token = createJWT(
+              user.email,
+              user._id,
+              3600
+            );
+            const tokenVerified = verifyToken(access_token);
+            if(tokenVerified){
+              res.status(201).json({
+                   success: true,
+                   token: access_token,
+                   user: savedUser
+                });
+            }
+            else{
+              res.status(401).json({
+                errors: ['Unauthorized User']
+              });
+            }
           }
           else {
             res.status(500).json({errors: ['Error Creating New User']});
@@ -68,7 +85,7 @@ export const signin = async (req, res) => {
             res.status(200).json({
                  success: true,
                  token: access_token,
-                 message: user
+                 user
               });
           }
           else{

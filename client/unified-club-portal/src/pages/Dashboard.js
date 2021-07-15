@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,13 +10,17 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import PersonIcon from '@material-ui/icons/Person';
 import { mainListItems, secondaryListItems } from '../services/listItems';
+import { AuthContext } from '../components/auth/ProvideAuth';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 function Copyright() {
   return (
@@ -115,13 +119,22 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [userSelectOpen, setUserSelectOpen] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleUserSelectClose = () => {
+    setOpen(false);
+  };
 
+  const handleUserSelectOpen = () => {
+    setOpen(true);
+  };
+  const userObj = window.localStorage.getItem('user');
+  const user = JSON.parse(userObj);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -139,11 +152,16 @@ export default function Dashboard() {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
+
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+            {user.name}
+            <PersonIcon />
           </IconButton>
+          <IconButton color="inherit">
+            Logout
+            <PersonIcon />
+          </IconButton>
+          
         </Toolbar>
       </AppBar>
       <Drawer
