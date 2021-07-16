@@ -11,11 +11,14 @@ const ProvideAuth = ({ children }) => {
 
   const getAuthentication = async () => {
     const token = window.localStorage.getItem('token');
+    const userObj = window.localStorage.getItem('user');
+    const user = JSON.parse(userObj);
     if(token){
       setLoading(true);
       const response = await fetch(`${VERIFY_TOKEN}/${token}`);
       console.log('Called to verify Token', await response.json());
       setAuthState(response.status === 200); 
+      setUser(user);
       setLoading(false);
     }
     else{

@@ -87,7 +87,7 @@ export default function SignIn() {
       window.localStorage.setItem('user', JSON.stringify(resp.user));
       setAuthState(true);
       setTimeout(()=>{
-        history.push('/dashboard');
+        history.push('/clubs');
       }, 500);
     }
   } 

@@ -8,20 +8,21 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import { Link } from 'react-router-dom';
 
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component={Link} to={"/clubs"}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Clubs" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to={"/club/new"}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Events" />
+      <ListItemText primary="New Club" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
