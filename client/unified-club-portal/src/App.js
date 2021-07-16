@@ -12,41 +12,73 @@ import ClubData from './pages/ClubData';
 
 function App() {
   return (
+
     <div className="App">
       <ProvideAuth>
         <Router>
-          <Dashboard component={() => {
-            return (
-              <Switch>
-                <Route
-                  path='/signup'
-                  exact
-                  component={SignUp}>
-                </Route>
-                <Route
-                  path='/signin'
-                  exact
-                  component={SignIn}>
-                </Route>
-                <PrivateRoute
-                  path='/clubs'
-                  exact
-                  component={ClubGrid}>
-                </PrivateRoute>
-                <PrivateRoute
-                  path='/club/new'
-                  exact
-                  component={ClubForm}>
-                </PrivateRoute>
-                <PrivateRoute
-                  path='/club/:id'
-                  exact
-                  component={ClubData}>
-                </PrivateRoute>
-              </Switch>
-            );
-          }} />
+          <Switch>
+            <Route
+              path='/signup'
+              exact
+              component={SignUp}>
+            </Route>
+            <Route
+              path='/signin'
+              exact
+              component={SignIn}>
+            </Route>
+            <PrivateRoute
+              path='/clubs'
+              exact
+              component={() => {
+                return (
+                  <Dashboard
+                    component={() => {
+                      return (<ClubGrid />)
+                    }} />
+                );
+              }}>
+            </PrivateRoute>
+            <PrivateRoute
+              path='/club/new'
+              exact
+              component={() => {
+                return (
+                  <Dashboard
+                    component={() => {
+                      return (<ClubForm />)
+                    }} />
+                );
+              }}>
+            </PrivateRoute>
+            <PrivateRoute
+              path='/club/:id'
+              exact
+              component={() => {
+                return (
+                  <Dashboard
+                    component={() => {
+                      return (<ClubData />)
+                    }} />
+                );
+              }}>
+            </PrivateRoute>
+          </Switch>
         </Router>
+        {/* <Router>
+          <Switch>
+            <Route
+              path='/signup'
+              exact
+              component={SignUp}>
+            </Route>
+            <Route
+              path='/signin'
+              exact
+              component={SignIn}>
+            </Route>
+          </Switch>
+        </Router> */}
       </ProvideAuth>
 
 

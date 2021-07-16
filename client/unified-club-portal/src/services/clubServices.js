@@ -28,7 +28,6 @@ export const createNewClub = async club => {
     body: JSON.stringify(club)
   }
   const response = await fetch(NEW_CLUB_URL, apiParams);
-  console.log(response);
   const resp = await response.json();
   return resp;
 } 
@@ -74,7 +73,6 @@ export const removeMemberFromClub = async (userId, clubId) => {
     },
     body: JSON.stringify({userId, clubId})
   };
-  console.log(apiParams); 
   const response = await fetch(CLUB_LEAVE_URL, apiParams);
   const resp = await response.json();
   return resp;

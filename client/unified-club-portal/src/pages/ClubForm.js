@@ -88,9 +88,14 @@ const ClubForm = props => {
       clubType: finalClubType,
       members
     };
-    console.log(club);
     const response = await createNewClub(club);
-    console.log(response);
+    if(response.ok){
+      window.alert('Club Creation Successfull');
+      console.log('Club Creation successfull');
+    }
+    else{
+      console.log(response.errors);
+    }
   }
   const redirectToDashboard = () => {
     setTimeout(()=>{

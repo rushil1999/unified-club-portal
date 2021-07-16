@@ -38,7 +38,6 @@ const UserList = props => {
       setLoading(true);
       const response = await fetchUserList(ids || []);
       if (response.success === true) {
-        console.log('User List Response',response.data );
         setUserList(response.data);
         setLoading(false);
       }
@@ -48,7 +47,6 @@ const UserList = props => {
     };
     getUser();
   }, [ids]);
-  console.log(userList);
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
@@ -60,7 +58,7 @@ const UserList = props => {
           {/* {userList.length} */}
           {userList.map(user => {
             return(
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems="flex-start" key={user['_id']}>
               <ListItemAvatar>
                 <Avatar aria-label="recipe" className={classes.avatar}>
                   {user.name[0]}

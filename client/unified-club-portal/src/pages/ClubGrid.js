@@ -35,7 +35,6 @@ export default function BoxGrid() {
       if (response && response.data) {
         setClubList(response.data);
         setLoading(false);
-        console.log(response.data);
       }
     }
     getClublist();
@@ -74,29 +73,3 @@ export default function BoxGrid() {
 
 
 
-// useEffect(() => {
-// 	firestore
-// 		.collection('box')
-// 		.get()
-// 		.then(querySnapshot => {
-// 			const data = querySnapshot.docs.map(doc => doc.data());
-// 			const ids = querySnapshot.docs.map(doc => doc.id);
-// 			data.map((element) => {
-// 					const strictBox: BoxInterface = {
-// 						id: '',
-// 						name: element.name,
-// 						description: element.description,
-// 					}
-// 					boxArray.push(strictBox);
-// 			})
-
-// 			ids.map((element, index) => {
-// 				boxArray[index]["id"] = element;
-// 			})
-// 			console.log(boxArray);
-// 			if(boxArray){
-// 				setBoxes(boxArray);
-// 				setLoading(false);
-// 			}
-//   });
-//   }, []);

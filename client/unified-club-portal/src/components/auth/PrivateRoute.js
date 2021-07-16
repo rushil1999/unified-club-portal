@@ -5,7 +5,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const contextValue = useContext(AuthContext);
-  console.log(contextValue);
   return (
     <div>
 

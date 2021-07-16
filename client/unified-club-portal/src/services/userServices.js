@@ -11,7 +11,6 @@ export const fetchUserList = async ids => {
     },
     body: JSON.stringify({ids})
   };
-  console.log(apiParams);
   const response = await fetch(USER_LIST_URL, apiParams);
   const resp = await response.json();
   return resp;

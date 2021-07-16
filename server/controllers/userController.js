@@ -5,18 +5,15 @@ import User from '../models/user';
 export const getUserList = async (req, res) => {
   console.log(req.body);
   const ids = req.body.ids;
-  console.log(ids);
   try{
     const users = ids.map(async id => {
       const user = await User.findById(id).exec();
       
       if(user){
-        console.log(user);
         return user;
       }
     });
     const userList = await Promise.all(users);
-    console.log(userList);
     res.status(200).json({
       success: true,
       data: userList

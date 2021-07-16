@@ -86,6 +86,7 @@ export default function SignIn() {
       //Need to figure out a solution, not sure if its good idea to store the user in local storage
       window.localStorage.setItem('user', JSON.stringify(resp.user));
       setAuthState(true);
+      setUser(resp.user);
       setTimeout(()=>{
         history.push('/clubs');
       }, 500);

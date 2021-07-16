@@ -6,7 +6,6 @@ import { createJWT, verifyToken } from '../services/authenticationService';
 
 export const signup = async (req, res) => {
   let { name, email, password, contact } = req.body;
-  console.log('Request Body', req.body);
   try {
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
@@ -25,7 +24,6 @@ export const signup = async (req, res) => {
         .then(async hash => {
           newUser.password = hash;
           const savedUser = await newUser.save();
-          console.log(savedUser);
           if (savedUser) {
             let access_token = createJWT(
               user.email,

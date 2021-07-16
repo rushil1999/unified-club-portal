@@ -42,7 +42,6 @@ export const saveClub = async (req, res) => {
     else {
       club = new Club({ _id: new mongoose.Types.ObjectId, ...req.body });
     }
-    console.log(club);
     await club.save();
     res.status(201).json({ success: true, data: club });
   }
@@ -60,7 +59,6 @@ export const enrollMemberInClub = async (req, res) => {
       res.status(201).json({ success: true, message: 'User is already Enrolled', data: club });
     }
     else {
-      console.log(club);
       club.members.push(userId);
       await club.save();
       res.status(201).json({ success: true, data: club });
@@ -85,7 +83,6 @@ export const removeMemberFromClub = async (req, res) => {
       const index = club.members.indexOf(userId);
       if (index > -1) {
         club.members.splice(index, 1);
-        console.log(club);
         await club.save();
       }
     }

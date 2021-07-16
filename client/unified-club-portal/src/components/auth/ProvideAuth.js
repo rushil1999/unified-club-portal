@@ -16,7 +16,6 @@ const ProvideAuth = ({ children }) => {
     if(token){
       setLoading(true);
       const response = await fetch(`${VERIFY_TOKEN}/${token}`);
-      console.log('Called to verify Token', await response.json());
       setAuthState(response.status === 200); 
       setUser(user);
       setLoading(false);

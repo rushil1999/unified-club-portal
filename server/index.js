@@ -13,7 +13,6 @@ if (result.error) {
   throw result.error
 }
 
-// console.log(result.parsed);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
