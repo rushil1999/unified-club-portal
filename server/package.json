@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "\"Unified Club Portal\"",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "nodemon -r esm index.js"
   },
