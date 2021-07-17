@@ -3,10 +3,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
+import GroupSharpIcon from '@material-ui/icons/GroupSharp';
+import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Link } from 'react-router-dom';
 
@@ -14,19 +14,19 @@ export const mainListItems = (
   <div>
     <ListItem button component={Link} to={"/clubs"}>
       <ListItemIcon>
-        <DashboardIcon />
+        <GroupSharpIcon />
       </ListItemIcon>
       <ListItemText primary="Clubs" />
     </ListItem>
     <ListItem button component={Link} to={"/club/new"}>
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <AddCircleOutlinedIcon />
       </ListItemIcon>
       <ListItemText primary="New Club" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <PeopleIcon />
+        <AccountCircleOutlinedIcon />
       </ListItemIcon>
       <ListItemText primary="Users" />
     </ListItem>

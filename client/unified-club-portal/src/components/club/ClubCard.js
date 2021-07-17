@@ -9,16 +9,19 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { useHistory } from "react-router-dom";
 import Box from "@material-ui/core/Box";
-import { shadows } from "@material-ui/system";
 
 const useStyles = makeStyles(theme => ({
   root: {
     margin: "10px",
     borderRadius: "16px",
+    transition: "0.3s",
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    "&:hover": {
+      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
+    },
   },
   media: {
     height: 0,
@@ -47,7 +50,7 @@ const ClubCard = props => {
   };
 
   return (
-    <Box boxShadow={3} className={classes.root}>
+    <Box className={classes.root}>
       <Card>
         <CardHeader
           avatar={
