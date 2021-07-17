@@ -12,17 +12,15 @@ export default function BoxGrid() {
   const useStyles = makeStyles((theme) =>
     createStyles({
       root: {
-        flexGrow: 1,  
-      },
-      paper: {
-        height: 140,
-        width: 100,
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center'
       },
       control: {
         padding: theme.spacing(2),
       },
       grid_card: {
-        padding: 10
+        padding: '10px'
       }
     }),
   );
@@ -53,11 +51,11 @@ export default function BoxGrid() {
           >
             {clubList.map((club) => {
               return (
-                <Grid key={`innerGrid-${club['_id']}`} item>
+                <Grid key={`innerGrid-${club['_id']}`} item xs={12} md={6}>
                   <div className = {styles.grid_card}
                     key={club.id}
                   >
-                    <ClubCard club={club} />
+                    <ClubCard club={club}/>
                   </div>
                 </Grid>
               );

@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    textAlign: 'center',
   },
   bullet: {
     display: 'inline-block',
@@ -32,19 +32,17 @@ const ClubInfo = props => {
     <React.Fragment>
       <Card className={classes.root} variant="outlined">
         <CardContent>
-          <Typography variant="h5" component="h2" key="name">
+          <Typography variant="h5" component="h1" key="name">
             {club.name}
           </Typography>
-          <Typography variant="body2" component="p" key="desc">
+          <Typography variant="body2" component="p" key="desc" className={classes.pos}>
             {club.desc}
           </Typography>
-          <br></br>
           <Typography variant="body2" component="p" key="memberCapacity">
-            Member Capacity :{club.memberCapacity}
+            Capacity :{club.memberCapacity}
           </Typography>
-          <br></br>
           <Typography variant="body2" component="p" key="membetsEnrolled">
-            Members Enrolled :{club.members.length}
+            Enrolled :{club.members.length}
           </Typography>
         </CardContent>
       </Card>
