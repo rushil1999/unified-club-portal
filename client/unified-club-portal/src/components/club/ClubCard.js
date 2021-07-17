@@ -1,80 +1,90 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { red } from "@material-ui/core/colors";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import { useHistory } from "react-router-dom";
+import Box from "@material-ui/core/Box";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: 200
+    margin: "10px",
+    borderRadius: "16px",
+    transition: "0.3s",
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    "&:hover": {
+      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
+    },
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   go_to: {
-    marginLeft: 'auto'
+    marginLeft: "auto",
+    border: "1px solid darkgrey",
+    color: "darkblue",
   },
   avatar: {
     backgroundColor: red[500],
+    marginRight: "0",
   },
 }));
 
 const ClubCard = props => {
   const history = useHistory();
   const classes = useStyles();
-  const {name, desc, _id } = props.club;
-
+  const { name, desc, _id } = props.club;
 
   const redirectToClubsData = () => {
     setTimeout(() => {
       history.push(`/club/${_id}`);
     }, 500);
-  }
+  };
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            C
-          </Avatar>
-        }
-        title={name}
-      />
-      <CardMedia
-        className={classes.media}
-        image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Musical_notes.svg/1280px-Musical_notes.svg.png"
-        title="Music"
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {desc}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton 
-          aria-label="go to club" 
-          className={classes.go_to}
-          onClick={redirectToClubsData}
-        >
-          <ArrowForwardIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+    <Box className={classes.root}>
+      <Card>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" className={classes.avatar}>
+              {name[0]}
+            </Avatar>
+          }
+          title={name}
+        />
+        <CardMedia
+          className={classes.media}
+          image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Musical_notes.svg/1280px-Musical_notes.svg.png"
+          title="Music"
+        />
+
+        <CardContent style={{ textAlign: "left" }}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {desc}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton
+            aria-label="go to club"
+            className={classes.go_to}
+            color="secondary"
+            size="medium"
+            onClick={redirectToClubsData}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    </Box>
   );
-}
+};
 
 export default ClubCard;

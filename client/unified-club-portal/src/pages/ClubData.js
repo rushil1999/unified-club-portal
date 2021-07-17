@@ -83,37 +83,26 @@ const ClubData = props => {
         <>
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
-              <Grid container justifyContent="center" spacing={5}>
-                <Grid key="club-info" item>
-                  <ClubInfo club={clubState}></ClubInfo>
+              <Grid container justifyContent="center" spacing={5} alignItems="center">
+                <Grid key="club-info" item xs={12} md={8}>
+                  <ClubInfo club={clubState} />
                 </Grid>
-                <Grid key="user-list" item>
-                  <UserList ids={clubState.members}></UserList>
+                <Grid key="user-list" item xs={12} md={4}>
+                  <UserList ids={clubState.members} />
                 </Grid>
-
               </Grid>
             </Grid>
           </Grid>
           <Grid container className={classes.root} spacing={2}>
-            {isUserAlreadyEnrolled ?
-              (<Grid item xs={12}>
+            <Grid item>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={leaveClubHandler}
+                  onClick={isUserAlreadyEnrolled? (leaveClubHandler) : (enrollHandler)}
                 >
-                  Leave
+                  {isUserAlreadyEnrolled? 'Leave' : 'Enroll'}
                 </Button>
-              </Grid>) :
-              (<Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={enrollHandler}
-                >
-                  Enroll
-                </Button>
-              </Grid>)}
+            </Grid>
           </Grid>
         </>
       )}
