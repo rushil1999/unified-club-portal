@@ -3,7 +3,6 @@ import User from '../models/user';
 
 
 export const getUserList = async (req, res) => {
-  console.log(req.body);
   const ids = req.body.ids;
   try{
     const users = ids.map(async id => {

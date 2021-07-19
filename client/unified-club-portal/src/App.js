@@ -9,10 +9,10 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import ClubGrid from './pages/ClubGrid';
 import ClubForm from './pages/ClubForm';
 import ClubData from './pages/ClubData';
+import EventForm from './pages/eventForm';
 
 function App() {
   return (
-
     <div className="App">
       <ProvideAuth>
         <Router>
@@ -63,22 +63,20 @@ function App() {
                 );
               }}>
             </PrivateRoute>
+            <PrivateRoute
+              path='/event/new/:clubId'
+              exact
+              component={() => {
+                return (
+                  <Dashboard
+                    component={() => {
+                      return (<EventForm />)
+                    }} />
+                );
+              }}>
+            </PrivateRoute>
           </Switch>
         </Router>
-        {/* <Router>
-          <Switch>
-            <Route
-              path='/signup'
-              exact
-              component={SignUp}>
-            </Route>
-            <Route
-              path='/signin'
-              exact
-              component={SignIn}>
-            </Route>
-          </Switch>
-        </Router> */}
       </ProvideAuth>
 
 

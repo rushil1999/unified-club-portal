@@ -32,7 +32,9 @@ export const saveClub = async (req, res) => {
     if (req.body.hasOwnProperty('_id')) {
       club = await Club.findById(req.body['_id']);
       if (!club) {
-        return res.status(404).send()
+        return res.status(404).json({
+          errors: ['Entity Not found']
+        })
       }
       const updates = Object.keys(req.body);
       updates.forEach((update) => {
@@ -97,3 +99,4 @@ export const removeMemberFromClub = async (req, res) => {
     })
   }
 }
+

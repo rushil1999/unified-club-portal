@@ -51,7 +51,7 @@ export default function BoxGrid() {
           >
             {clubList.map((club) => {
               return (
-                <Grid key={`innerGrid-${club['_id']}`} item xs={12} md={6}>
+                <Grid key={`innerGrid-${club['_id']}`} item xs={12} md={3}>
                   <div className = {styles.grid_card}
                     key={club.id}
                   >

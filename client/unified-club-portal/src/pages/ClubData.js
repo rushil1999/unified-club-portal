@@ -3,11 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ClubInfo from '../components/club/ClubInfo';
 import UserList from '../components/user/UserList';
+import EventList from '../components/event/eventList';
 import { fetchClubDetails, enrollMemberInClub, removeMemberFromClub } from '../services/clubServices';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { AuthContext } from '../components/auth/ProvideAuth';
+import { useHistory } from 'react-router';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +31,7 @@ const ClubData = props => {
   const { user } = contextValue;
   let { id } = useParams();
   const classes = useStyles();
+  const history = useHistory();
 
   const [clubState, setClubState] = useState();
   const [loading, setLoading] = useState(true);
@@ -75,6 +78,10 @@ const ClubData = props => {
     }
   }
 
+  const redirectToNewEventForm = () => {
+    history.push(`/event/new/${clubState['_id']}`)
+  }
+
   const isUserAlreadyEnrolled = clubState?.members.includes(user['_id']);
 
   return (
@@ -87,21 +94,36 @@ const ClubData = props => {
                 <Grid key="club-info" item xs={12} md={8}>
                   <ClubInfo club={clubState} />
                 </Grid>
-                <Grid key="user-list" item xs={12} md={4}>
-                  <UserList ids={clubState.members} />
-                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container className={classes.root} spacing={2}>
-            <Grid item>
+            <Grid container item className={classes.root} >
+              <Grid item xs={6}>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={isUserAlreadyEnrolled? (leaveClubHandler) : (enrollHandler)}
+                  onClick={isUserAlreadyEnrolled ? (leaveClubHandler) : (enrollHandler)}
                 >
-                  {isUserAlreadyEnrolled? 'Leave' : 'Enroll'}
+                  {isUserAlreadyEnrolled ? 'Leave' : 'Enroll'}
                 </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={redirectToNewEventForm}
+                >
+                  Organize an Event
+                </Button>
+              </Grid>
+
+            </Grid>
+            <Grid container item className={classes.root} spacing={2}>
+              <Grid item xs={6} >
+                <UserList ids={clubState.members} />
+              </Grid>
+              <Grid item xs={6}>
+                <EventList ids={clubState.events} />
+              </Grid>
             </Grid>
           </Grid>
         </>

@@ -63,7 +63,8 @@ const ClubForm = props => {
     memberCapacity: 0,
     clubType: '',
     members: [],
-    otheClubType: ''
+    otheClubType: '',
+    events: []
   })
 
   const formChangeHandler = event => {
@@ -89,9 +90,10 @@ const ClubForm = props => {
       members
     };
     const response = await createNewClub(club);
-    if(response.ok){
+    if(response.success === true){
       window.alert('Club Creation Successfull');
       console.log('Club Creation successfull');
+      redirectToDashboard();
     }
     else{
       console.log(response.errors);
@@ -99,7 +101,7 @@ const ClubForm = props => {
   }
   const redirectToDashboard = () => {
     setTimeout(()=>{
-      history.push('/dashboard');
+      history.push('/clubs');
     }, 500);
   }
 

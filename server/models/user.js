@@ -20,7 +20,13 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-  }
+  },
+  registeredClubs: [{
+    type: mongoose.Types.ObjectId
+  }],
+  registeredEvents: [{
+    type: mongoose.Types.ObjectId
+  }]
 },{ timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import clubRouter from './routes/clubRoutes';
 import authRouter from './routes/authRoutes';
 import userRouter from './routes/userRoutes';
+import eventRouter from './routes/eventRoutes';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -48,5 +49,8 @@ app.use('/clubs', clubRouter);
 app.use('/club', clubRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/event', eventRouter);
+app.use('/events', eventRouter);
+
 
 
