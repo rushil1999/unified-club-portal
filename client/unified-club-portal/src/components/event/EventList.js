@@ -10,6 +10,7 @@ import { red } from '@material-ui/core/colors';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import { Button, CircularProgress } from '@material-ui/core';
+import { useHistory } from 'react-router';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const UserList = props => {
+const EventList = props => {
   const classes = useStyles();
   const { ids } = props;
   const [eventList, setEventList] = useState(); //Array of user Objects
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     const getData = async () => {
@@ -47,6 +49,11 @@ const UserList = props => {
     };
     getData();
   }, [ids]);
+
+  const redirectToEventData = id => {
+    history.push(`/event/${id}`)
+  }
+
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
@@ -56,12 +63,14 @@ const UserList = props => {
         />
         <List className={classes.root}>
           {/* {userList.length} */}
-          {eventList.map(user => {
+          {eventList.map(event => {
             return(
-            <ListItem alignItems="flex-start" key={user['_id']}>
-              <Button>
+            <ListItem alignItems="flex-start" key={event['_id']}>
+              <Button
+                onClick={()=>{redirectToEventData(event['_id'])}}
+              >
                 <ListItemText
-                  primary={user.name}
+                  primary={event.name}
                 />
               </Button>
             </ListItem>);
@@ -72,4 +81,4 @@ const UserList = props => {
   );
 }
 
-export default UserList;
+export default EventList;

@@ -57,14 +57,22 @@ export const enrollMemberInClub = async (req, res) => {
   try {
     const club = await Club.findById(clubId).exec();
     const user = await User.findById(userId).exec(); //Just to check if user is present in DB
-    if (club.members.includes(userId)) {
-      res.status(201).json({ success: true, message: 'User is already Enrolled', data: club });
+    if((club.member || []).length + 1 > club.memberCapacity){
+      res.status(412).json({
+        message: 'Limit Exceeded'
+      })
     }
-    else {
-      club.members.push(userId);
-      await club.save();
-      res.status(201).json({ success: true, data: club });
+    else{
+      if ((club.members || []).includes(userId)) {
+        res.status(201).json({ success: true, message: 'User is already Enrolled', data: club });
+      }
+      else {
+        club.members.push(userId);
+        await club.save();
+        res.status(201).json({ success: true, data: club });
+      }
     }
+    
 
 
   }

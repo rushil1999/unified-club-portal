@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Event from '../models/event';
 import Club from '../models/club';
+import User from '../models/user';
 
 export const saveEvent = async (req, res) => {
   let event;
@@ -33,14 +34,14 @@ export const saveEvent = async (req, res) => {
         data: event
       });
     }
-    else{
+    else {
       res.status(404).json({
         errors: ['Entity Not found']
       })
     }
   }
   catch (err) {
-    console.log('Catch', err);
+    console.log('Catch', err.message);
     res.status(500).json({
       errors: [err.message]
     });
@@ -50,7 +51,7 @@ export const saveEvent = async (req, res) => {
 export const getEventInfo = async (req, res) => {
   try {
     const eventId = req.params.id;
-    const event = await Event.finfById(eventId).exec();
+    const event = await Event.findById(eventId).exec();
     if (!event) {
       res.status(404).json({
         errors: ['Entity Not found']
@@ -75,7 +76,7 @@ export const getEvents = async (req, res) => {
   try {
     const events = ids.map(async id => {
       const event = await Event.findById(id).exec();
-      if(event){
+      if (event) {
         return event;
       }
     });
@@ -87,5 +88,49 @@ export const getEvents = async (req, res) => {
   }
   catch (err) {
     res.status(500).json({ errors: [err.message] })
+  }
+}
+
+export const registerUserToEvent = async (req, res) => {
+  const { userId, eventId } = req.body;
+  try {
+    const user = await User.findById(userId).exec();
+    const event = await Event.findById(eventId).exec();
+    if (user && event) {
+      if ((event.participants || []).length + 1 > event.capacity) {
+        res.status(412).json({
+          message: 'Limit Exceeded'
+        })
+      }
+      else {
+        if ((event.participants|| []).includes(userId)) {
+          res.status(412).json({
+            message: 'Limit Exceeded'
+          })
+        }
+        else {
+          event.participants.push(user['_id']);
+          user.registeredEvents.push(event.id);
+          await event.save();
+          await user.save();
+          res.status(200).json({
+            success: true,
+            data: event
+          })
+        }
+
+      }
+    }
+    else {
+      res.status(404).json({
+        errors: ['Entity Not Found']
+      })
+    }
+  }
+  catch (err) {
+    console.log(err.message);
+    res.status(500).json({
+      errors: [err.message]
+    });
   }
 }

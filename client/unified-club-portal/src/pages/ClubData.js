@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ClubInfo from '../components/club/ClubInfo';
 import UserList from '../components/user/UserList';
-import EventList from '../components/event/eventList';
+import EventList from '../components/event/EventList';
 import { fetchClubDetails, enrollMemberInClub, removeMemberFromClub } from '../services/clubServices';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams } from "react-router-dom";
@@ -115,14 +115,13 @@ const ClubData = props => {
                   Organize an Event
                 </Button>
               </Grid>
-
             </Grid>
             <Grid container item className={classes.root} spacing={2}>
               <Grid item xs={6} >
                 <UserList ids={clubState.members} />
               </Grid>
               <Grid item xs={6}>
-                <EventList ids={clubState.events} />
+                <EventList ids={clubState.events} club={clubState}/>
               </Grid>
             </Grid>
           </Grid>

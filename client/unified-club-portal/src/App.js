@@ -10,6 +10,7 @@ import ClubGrid from './pages/ClubGrid';
 import ClubForm from './pages/ClubForm';
 import ClubData from './pages/ClubData';
 import EventForm from './pages/eventForm';
+import EventData from './pages/EventData';
 
 function App() {
   return (
@@ -71,6 +72,18 @@ function App() {
                   <Dashboard
                     component={() => {
                       return (<EventForm />)
+                    }} />
+                );
+              }}>
+            </PrivateRoute>
+            <PrivateRoute
+              path='/event/:id'
+              exact
+              component={() => {
+                return (
+                  <Dashboard
+                    component={() => {
+                      return (<EventData />)
                     }} />
                 );
               }}>

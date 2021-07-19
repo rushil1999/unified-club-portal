@@ -13,6 +13,7 @@ export const USER_LIST_URL = DB_URL + '/user/userList';
 
 export const NEW_EVENT_URL = DB_URL + '/event';
 export const EVENT_LIST_URL = DB_URL + '/events/list';
+export const EVENT_REGISTER_URL = DB_URL + '/event/register';
 
 
 
