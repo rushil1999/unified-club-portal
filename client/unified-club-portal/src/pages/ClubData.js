@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { AuthContext } from '../components/auth/ProvideAuth';
 import { useHistory } from 'react-router';
+import MessageComponent from '../components/MessageComponent';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +36,8 @@ const ClubData = props => {
 
   const [clubState, setClubState] = useState();
   const [loading, setLoading] = useState(true);
+  const [messageState, setMessageState] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const getClubDetails = async () => {
@@ -60,9 +63,13 @@ const ClubData = props => {
     const response = await enrollMemberInClub(user['_id'], id);
     if (response.success === true) {
       setClubState(response.data);
+      setMessage('Enrolled Successfully');
+      setMessageState(true);
     } else {
       console.log(response.errors)
       window.alert('Error Ocurred');
+      setMessage('Some Error Occured');
+      setMessageState(true);
     }
   }
 
@@ -86,6 +93,7 @@ const ClubData = props => {
 
   return (
     <React.Fragment>
+      {messageState && <MessageComponent open={messageState} messageContent={message} setMessageState={setMessageState}/>}
       {loading ? <CircularProgress /> : (
         <>
           <Grid container className={classes.root} spacing={2}>

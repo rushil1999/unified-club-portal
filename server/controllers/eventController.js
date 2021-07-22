@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Event from '../models/event';
 import Club from '../models/club';
 import User from '../models/user';
+import Resource from '../models/resource';
 
 export const saveEvent = async (req, res) => {
   let event;
@@ -9,8 +10,9 @@ export const saveEvent = async (req, res) => {
     const { clubId } = req.body;
     const club = await Club.findById(clubId);
     if (club) {
-      if (req.body.hasOwnProperty['_id']) {
+      if (req.body['_id']) {
         event = await Event.finfById(req.body['_id']).exec();
+
         if (!event) {
           res.status(404).json({
             errors: ['Entity Not found']
@@ -25,6 +27,15 @@ export const saveEvent = async (req, res) => {
       }
       else {
         event = new Event({ _id: new mongoose.Types.ObjectId(), ...req.body });
+      }
+      if(req.file){
+        const {originalname: fileName, mimetype: type, path } = req.file;
+        const extension = fileName.split('.').pop();
+        const resource = new Resource({fileName, type, path, extension});
+        await resource.save();
+        if (event.publicFiles.length === 0){
+          event.publicFiles.push(resource['_id']);
+        }
       }
       await event.save();
       club.events.push(event['_id']); //updating club data object as well

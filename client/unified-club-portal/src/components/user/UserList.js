@@ -14,9 +14,13 @@ import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: '50%',
     maxWidth: '36ch',
     backgroundColor: theme.palette.background.paper,
+    margin: 'auto',
+    borderRadius: '10px',
+    padding: '15px',
+    borderStyle: 'ridge',
   },
   inline: {
     display: 'inline',
@@ -24,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  listItem: {
+    padding: '12px'
+  }
 }));
 
 
@@ -50,27 +57,30 @@ const UserList = props => {
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
-      <Card>
-        <CardHeader
-          title='Members'
-        />
-        <List className={classes.root}>
-          {/* {userList.length} */}
-          {userList.map(user => {
-            return(
-            <ListItem alignItems="flex-start" key={user['_id']}>
-              <ListItemAvatar>
-                <Avatar aria-label="recipe" className={classes.avatar}>
-                  {user.name[0]}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={user.name}
-              />
-            </ListItem>);
-          })}
-        </List>
-      </Card>)}
+        <Card className ={classes.listItem}>
+          <CardHeader
+            title='Members / Participants'
+          />
+          
+          <List  >
+            {/* {userList.length} */}
+            {userList.map(user => {
+              return (
+                <div >
+                  <ListItem className={classes.root} alignItems="flex-start" key={user['_id']}>
+                    <ListItemAvatar>
+                      <Avatar aria-label="recipe" className={classes.avatar}>
+                        {user.name[0]}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={user.name}
+                    />
+                  </ListItem>
+                  </div>);
+            })}
+          </List>
+        </Card>)}
     </React.Fragment>
   );
 }

@@ -9,8 +9,9 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import ClubGrid from './pages/ClubGrid';
 import ClubForm from './pages/ClubForm';
 import ClubData from './pages/ClubData';
-import EventForm from './pages/eventForm';
+import EventForm from './pages/EventForm';
 import EventData from './pages/EventData';
+import UserEvents from './pages/UserEvents';
 
 function App() {
   return (
@@ -84,6 +85,18 @@ function App() {
                   <Dashboard
                     component={() => {
                       return (<EventData />)
+                    }} />
+                );
+              }}>
+            </PrivateRoute>
+            <PrivateRoute
+              path='/user/events'
+              exact
+              component={() => {
+                return (
+                  <Dashboard
+                    component={() => {
+                      return (<UserEvents />)
                     }} />
                 );
               }}>

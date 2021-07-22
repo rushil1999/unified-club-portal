@@ -68,6 +68,8 @@ export const enrollMemberInClub = async (req, res) => {
       }
       else {
         club.members.push(userId);
+        user.registeredClubs.push(clubId);
+        await user.save();
         await club.save();
         res.status(201).json({ success: true, data: club });
       }

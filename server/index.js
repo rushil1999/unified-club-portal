@@ -7,7 +7,8 @@ import eventRouter from './routes/eventRoutes';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
+import path from 'path';
+import multer from 'multer';
 const result = dotenv.config()
 
 if (result.error) {
@@ -43,6 +44,8 @@ mongoose.connect(CONNECTION_URL, connectionParams)
   })
 
 mongoose.set('useFindAndModify', false);
+
+app.use( express.static(__dirname + '/public/uploads'));
 
 //setting primary routes
 app.use('/clubs', clubRouter);

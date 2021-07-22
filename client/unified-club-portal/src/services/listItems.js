@@ -42,17 +42,17 @@ export const mainListItems = (
 export const secondaryListItems = (
   <div>
     <ListSubheader inset>Saved Items</ListSubheader>
-    <ListItem button>
+    <ListItem button component={Link} to={"/users/clubs"}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Clubs" />
+      <ListItemText primary="My Clubs" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to={"/user/events"}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Events" />
+      <ListItemText primary="My Events" />
     </ListItem>
   </div>
 );

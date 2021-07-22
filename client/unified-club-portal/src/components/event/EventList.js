@@ -15,9 +15,9 @@ import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    maxWidth: '36ch',
+    width: '50%',
     backgroundColor: theme.palette.background.paper,
+    margin: 'auto',
   },
   inline: {
     display: 'inline',
@@ -62,7 +62,6 @@ const EventList = props => {
           title='Events'
         />
         <List className={classes.root}>
-          {/* {userList.length} */}
           {eventList.map(event => {
             return(
             <ListItem alignItems="flex-start" key={event['_id']}>

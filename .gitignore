@@ -4,3 +4,4 @@ config.js
 .env
 client/unified-club-portal/package-lock.json
 server/package-lock.json
+server/public/

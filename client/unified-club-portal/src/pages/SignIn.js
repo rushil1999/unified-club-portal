@@ -80,7 +80,6 @@ export default function SignIn() {
     }
     else{
       const resp = await response.json();
-      console.log(resp);
       window.localStorage.setItem('token', resp.token);
 
       //Need to figure out a solution, not sure if its good idea to store the user in local storage

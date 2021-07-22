@@ -28,6 +28,12 @@ const EventInfo = props => {
   const { event } = props;
 
   const { name, desc,capacity, from, to, status } = event;
+  const startDate = new Date(from);
+  const startDateString = `${startDate.getDate()}/${startDate.getMonth()}/${startDate.getFullYear()} ${startDate.getHours()}:${startDate.getMinutes()}`;
+
+  const toDate = new Date(to);
+  const toDateString = `${toDate.getDate()}/${toDate.getMonth()}/${toDate.getFullYear()} ${toDate.getHours()}:${toDate.getMinutes()} `
+  
   return (
     <React.Fragment>
       <Card className={classes.root} variant="outlined">
@@ -39,23 +45,18 @@ const EventInfo = props => {
             {desc}
           </Typography>
           <Typography variant="body2" component="p" key="memberCapacity">
-            Capacity :{capacity}
+            Capacity : {capacity}
           </Typography>
           <Typography variant="body2" component="p" key="startDate">
-            Start Date :{from}
+            Start Date : {startDateString}
           </Typography>
           <Typography variant="body2" component="p" key="endDate">
-            End Date :{to}
-          </Typography>
-          <Typography variant="body2" component="p" key="status">
-            Status :{status}
+            End Date : {toDateString}
           </Typography>
         </CardContent>
       </Card>
     </React.Fragment>
-
   );
-
 }
 
 export default EventInfo;
