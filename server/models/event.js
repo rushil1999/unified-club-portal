@@ -27,6 +27,10 @@ const eventSchema = mongoose.Schema({
     type: Schema.Types.Date,
     required: true,
   },
+  venue: {
+    type: String,
+    required: true,
+  },
   participants: [{
     type: mongoose.Types.ObjectId 
   }],

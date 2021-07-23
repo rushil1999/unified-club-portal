@@ -10,6 +10,7 @@ export const saveEvent = async (req, res) => {
     const { clubId } = req.body;
     const club = await Club.findById(clubId);
     if (club) {
+      
       if (req.body['_id']) {
         event = await Event.findById(req.body['_id']).exec();
 
@@ -26,7 +27,9 @@ export const saveEvent = async (req, res) => {
         }
       }
       else {
+        
         event = new Event({ _id: new mongoose.Types.ObjectId(), ...req.body });
+        
         if(req.file){
           const {originalname: fileName, mimetype: type, path } = req.file;
           const extension = fileName.split('.').pop();

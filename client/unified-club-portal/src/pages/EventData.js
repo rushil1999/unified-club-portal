@@ -3,7 +3,7 @@ import { makeStyles, responsiveFontSizes } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import EventInfo from '../components/event/EventInfo';
 import UserList from '../components/user/UserList';
-import { fetchEventDetails, registerUser } from '../services/eventServices';
+import { fetchEventDetails, registerUser, getEventStatus } from '../services/eventServices';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -47,6 +47,7 @@ const EventData = props => {
   const [eventState, setEventState] = useState();
   const [loading, setLoading] = useState(true);
   const [imagePath, setImagePath] = useState();
+  const [eventStatusState, setEventStatusState] = useState();
   const { user } = contextValue;
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const EventData = props => {
       const response = await fetchEventDetails(id);
       if (response.success === true && !response.message) {
         setEventState(response.data);
+        setEventStatusState(getEventStatus(response.data.from, response.data.to));
         const { publicFiles } = response.data;
         if (publicFiles.length > 0) {
           const resourceResponse = await fetchResource(publicFiles[0]['_id']);
@@ -113,7 +115,7 @@ const EventData = props => {
           </Grid>
           <br></br>
           <Grid container item className={classes.registerButton} >
-            {(!eventState.participants.includes(user['_id']) || !user.role === 'admin') &&
+            {(!eventState.participants.includes(user['_id']) || !user.role === 'admin') && (eventStatusState < 2) &&
               (<Grid item xs={6}>
                 <Button
                   variant="contained"
@@ -124,7 +126,7 @@ const EventData = props => {
                 </Button>
               </Grid>)
             }
-            {user.role === 'admin' && (<Grid item xs={6}>
+            {(user.role === 'admin' && eventStatusState === -1) && (<Grid item xs={6}>
               <Button
                 variant="contained"
                 color="primary"

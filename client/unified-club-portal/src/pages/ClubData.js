@@ -118,7 +118,7 @@ const ClubData = props => {
                   {isUserAlreadyEnrolled ? 'Leave' : 'Enroll'}
                 </Button>
               </Grid>
-              <Grid item xs={4} >
+              {user.role === 'admin' && (<Grid item xs={4} >
                 <Button
                   variant="contained"
                   color="primary"
@@ -126,7 +126,7 @@ const ClubData = props => {
                 >
                   Organize an Event
                 </Button>
-              </Grid>
+              </Grid>)}
               {user.role === 'admin' && (
               <Grid item xs={4}>
                 <Button

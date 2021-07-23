@@ -8,10 +8,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { useHistory, useParams } from 'react-router-dom';
-import { createNewEvent, validateEventObject } from '../services/eventServices';
+import { createNewEvent, validateEventObject, getDateTimeLocal, fetchEventDetails } from '../services/eventServices';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { fetchEventDetails } from '../services/eventServices';
 import { fetchResource } from '../services/resourceServices'; 
 import { DB_URL } from '../services/constants';
 import { CircularProgress } from '@material-ui/core';
@@ -79,6 +78,8 @@ const EventForm = props => {
     to: null,
     from: null,
     eventPoster: null,
+    venue: '',
+    clubId,
   });
 
   const [image, setImage] = useState(null);
@@ -177,7 +178,7 @@ const EventForm = props => {
     setImage(null);
   }
 
-  const {name, desc, from, to, capacity } = eventState;
+  const {name, desc, from, to, capacity, venue } = eventState;
   return (
     <React.Fragment>
       {loading ? <CircularProgress/> : ( 
@@ -228,9 +229,22 @@ const EventForm = props => {
                   onChange={formChangeHandler}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  value={venue}
+                  id="venue"
+                  name="venue"
+                  label="Venue"
+                  fullWidth
+                  autoComplete="shipping address-line1"
+                  onChange={formChangeHandler}
+
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={from}
+                  value={from.split('.')[0]}
                   id="date"
                   label="Start Date"
                   name="from"
@@ -244,7 +258,7 @@ const EventForm = props => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={to}
+                  value={to.split('.')[0]}
                   id="date"
                   label="End Date"
                   name="to"
