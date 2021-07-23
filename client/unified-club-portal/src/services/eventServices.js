@@ -1,5 +1,6 @@
 import { getToken } from "./authServices"
-import { EVENT_LIST_URL, NEW_EVENT_URL , EVENT_REGISTER_URL} from './constants';
+import { EVENT_LIST_URL, NEW_EVENT_URL, EVENT_REGISTER_URL } from './constants';
+import { isBlank, isEmpty } from "./validationFunctions";
 
 // export const createNewEvent = async event => {
 //   const token = getToken();
@@ -21,15 +22,15 @@ export const createNewEvent = async event => {
   const formData = new FormData();
   const headers = new Headers();
   headers.append('authorization', `${token}`);
-  const {name, desc, from, to, eventPoster, capacity, clubId} = event;
+  const { name, desc, from, to, eventPoster, capacity, clubId } = event;
   formData.append('file', eventPoster);
-  formData.append('name',name );
+  formData.append('name', name);
   formData.append('clubId', clubId);
-  formData.append('desc',desc )
-  formData.append('from',from )
-  formData.append('to',to );
+  formData.append('desc', desc)
+  formData.append('from', from)
+  formData.append('to', to);
   formData.append('capacity', capacity);
-  if(event['_id']){
+  if (event['_id']) {
     formData.append('_id', event['_id']);
   }
   const apiParams = {
@@ -44,13 +45,13 @@ export const createNewEvent = async event => {
 
 export const fetchEventList = async ids => {
   const token = getToken();
-  const apiParams = { 
+  const apiParams = {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
       'authorization': `${token}`
     },
-    body: JSON.stringify({ids})
+    body: JSON.stringify({ ids })
   };
   const response = await fetch(EVENT_LIST_URL, apiParams);
   const resp = await response.json();
@@ -72,7 +73,7 @@ export const fetchEventDetails = async id => {
   return res;
 }
 
-export const registerUser = async(userId, eventId) =>{
+export const registerUser = async (userId, eventId) => {
   const token = getToken();
   const apiParams = {
     method: 'POST',
@@ -80,9 +81,36 @@ export const registerUser = async(userId, eventId) =>{
       'content-type': 'application/json',
       'authorization': `${token}`
     },
-    body: JSON.stringify({userId, eventId})
+    body: JSON.stringify({ userId, eventId })
   }
   const response = await fetch(EVENT_REGISTER_URL, apiParams);
   const res = await response.json();
-  return res; 
+  return res;
+}
+
+export const validateEventObject = event => {
+  const { name, desc, capacity, from, to } = event;
+  const errors = [];
+  if (isBlank(name) || isEmpty(name)) {
+    errors.push('Name Cannot be Blank');
+  }
+  if (isBlank(desc) || isEmpty(desc)) {
+    errors.push('Description Cannot be Blank');
+  }
+  if (capacity <= 1) {
+    errors.push('Capacity must be greater than 1');
+  }
+  if (!to || !from) {
+    errors.push('Field Cannot be empty');
+
+  }
+  else {
+    const toTimeStamp = new Date(to).getTime();
+    const fromTimeStamp = new Date(from).getTime();
+    if (toTimeStamp < fromTimeStamp) {
+      errors.push('Date must be after start date');
+    }
+  }
+  return errors;
+
 }
