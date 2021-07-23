@@ -66,7 +66,7 @@ function App() {
               }}>
             </PrivateRoute>
             <PrivateRoute
-              path='/event/new/:clubId'
+              path='/event/new/:clubId/:eventId'
               exact
               component={() => {
                 return (

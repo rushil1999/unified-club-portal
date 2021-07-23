@@ -86,7 +86,7 @@ const ClubData = props => {
   }
 
   const redirectToNewEventForm = () => {
-    history.push(`/event/new/${clubState['_id']}`)
+    history.push(`/event/new/${clubState['_id']}/new`)
   }
 
   const isUserAlreadyEnrolled = clubState?.members.includes(user['_id']);

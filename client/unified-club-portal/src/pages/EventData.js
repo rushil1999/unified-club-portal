@@ -7,7 +7,7 @@ import { fetchEventDetails, registerUser } from '../services/eventServices';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../components/auth/ProvideAuth';
 import { fetchResource } from '../services/resourceServices';
 import { DB_URL } from '../services/constants';
@@ -42,6 +42,7 @@ const EventData = props => {
   const contextValue = useContext(AuthContext);
   let { id } = useParams();
   const classes = useStyles();
+  const history = useHistory();
 
   const [eventState, setEventState] = useState();
   const [loading, setLoading] = useState(true);
@@ -93,22 +94,27 @@ const EventData = props => {
       window.alert(response.errors);
     }
   }
+
+  const redirectToEventForm = () => {
+    history.push(`/event/new/${eventState.clubId}/${eventState['_id']}`)
+  }
+
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
         <div >
           {imagePath && (<><img className={classes.image} src={`${DB_URL}/${imagePath}`} alt="event" />
-          <br></br>
-          <br></br></>)}
+            <br></br>
+            <br></br></>)}
           <Grid container justifyContent="center" spacing={5} alignItems="center">
             <Grid key="club-info" item xs={12} md={8}>
               <EventInfo event={eventState} />
             </Grid>
           </Grid>
           <br></br>
-          {!eventState.participants.includes(user['_id']) && (
-            <Grid container item className={classes.registerButton} >
-              <Grid item xs={6}>
+          <Grid container item className={classes.registerButton} >
+            {!eventState.participants.includes(user['_id']) &&
+              (<Grid item xs={6}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -116,10 +122,19 @@ const EventData = props => {
                 >
                   Register
                 </Button>
-              </Grid>
-
-            </Grid>
-          )}
+              </Grid>)
+            }
+            {user.role === 'admin' && (<Grid item xs={6}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={redirectToEventForm}
+              >
+                Edit
+              </Button>
+            </Grid>)}
+          </Grid>
+          <br></br>
           <Grid container item className={classes.memberSection} justifyContent="center">
             <Grid item xs={12} >
               <UserList ids={eventState.participants} />

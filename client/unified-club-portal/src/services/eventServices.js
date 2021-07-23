@@ -11,8 +11,6 @@ import { EVENT_LIST_URL, NEW_EVENT_URL , EVENT_REGISTER_URL} from './constants';
 //     },
 //     body: JSON.stringify(event)
 //   };
-//   console.log(token);
-//   console.log(event);
 //   const response = await fetch(NEW_EVENT_URL, apiParams);
 //   const resp = await response.json();
 //   return resp;
@@ -31,12 +29,14 @@ export const createNewEvent = async event => {
   formData.append('from',from )
   formData.append('to',to );
   formData.append('capacity', capacity);
+  if(event['_id']){
+    formData.append('_id', event['_id']);
+  }
   const apiParams = {
     method: 'POST',
     headers,
     body: formData
   };
-  console.log(event);
   const response = await fetch(NEW_EVENT_URL, apiParams);
   const resp = await response.json();
   return resp;

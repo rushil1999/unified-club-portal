@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +11,10 @@ import { useHistory, useParams } from 'react-router-dom';
 import { createNewEvent } from '../services/eventServices';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { fetchEventDetails } from '../services/eventServices';
+import { fetchResource } from '../services/resourceServices'; 
+import { DB_URL } from '../services/constants';
+import { CircularProgress } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +55,12 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
+  image: {
+    width: '100%',
+    height: '300px',
+    margin: 'auto',
+    flexGrow: 1,
+  },
 }));
 
 
@@ -59,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 const EventForm = props => {
   const history = useHistory();
   const classes = useStyles();
-  let { clubId } = useParams();
+  let { clubId, eventId } = useParams();
 
   const [eventState, setEventState] = useState({
     name: '',
@@ -76,10 +85,50 @@ const EventForm = props => {
     capacity: '',
     to: '',
     from: '',
-    eventPoster: ''
+    eventPoster: '',
   });
 
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isUpdate, setIsUpdate ] = useState(false); 
+
+  useEffect(()=>{
+    const getEventDetails = async id => {
+      setLoading(true);
+      const response = await fetchEventDetails(id);
+      if (response.success === true && !response.message) {
+        setEventState(response.data);
+        const { publicFiles } = response.data;
+        if (publicFiles.length > 0) {
+          const resourceResponse = await fetchResource(publicFiles[0]['_id']);
+          if (resourceResponse) {
+            const { path } = resourceResponse.data;
+            setImage(`${DB_URL}/${path}`);
+          }
+          else {
+            console.log(resourceResponse.errors);
+          }
+        }
+        setLoading(false);
+      }
+      else if (response.message) {
+        window.alert(response.message);
+      }
+      else {
+        console.log(response.errors);
+      }
+    };
+
+    if(eventId !== 'new' && eventId !== null && eventId !== undefined && eventId !== ''){
+      getEventDetails(eventId);
+      setIsUpdate(true);
+    }
+    else{
+      setLoading(false);
+    }
+  }, [])
+
+
 
   const formChangeHandler = event => {
     const fieldName = event.target.name;
@@ -103,7 +152,6 @@ const EventForm = props => {
   }
 
   const formChangeHandlerForImage = event => {
-    console.log(event.target.files[0]);
     setImage(URL.createObjectURL(event.target.files[0]));
     setEventState({ ...eventState, eventPoster: event.target.files[0] })
   }
@@ -118,8 +166,11 @@ const EventForm = props => {
       to,
       from,
       clubId,
-      eventPoster
+      eventPoster,
     };
+    if(isUpdate){
+      clubEvent['_id'] = eventId;
+    }
     const response = await createNewEvent(clubEvent);
     if (response.success === true) {
       window.alert('Event Creation Successfull');
@@ -148,29 +199,36 @@ const EventForm = props => {
     setImage(null);
   }
 
+  const {name, desc, from, to, capacity } = eventState;
   return (
     <React.Fragment>
-      <main className={classes.layout}>
+      {loading ? <CircularProgress/> : ( 
+        <div>
+        {image && (<><img className={classes.image} src={image} alt="event" /></>)}
+        <div className={classes.layout}>
         <Card className={classes.root} variant="outlined">
           <CardContent>
             <Typography component="h1" variant="h4" align="center">
-              New Event
+              {`${isUpdate? 'Update': 'New'} Event`}
             </Typography>
             <Grid container spacing={3}>
               <Grid item xs={12} >
                 <TextField
                   required
+                  value={name}
                   id="name"
                   name="name"
                   label="Event Name"
                   fullWidth
                   autoComplete="given-name"
                   onChange={formChangeHandler}
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
+                  value={desc}
                   id="desc"
                   name="desc"
                   label="Description"
@@ -182,6 +240,7 @@ const EventForm = props => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={capacity}
                   id="capacity"
                   name="capacity"
                   label="Capacity"
@@ -192,6 +251,7 @@ const EventForm = props => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={from}
                   id="date"
                   label="Start Date"
                   name="from"
@@ -205,6 +265,7 @@ const EventForm = props => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={to}
                   id="date"
                   label="End Date"
                   name="to"
@@ -219,7 +280,7 @@ const EventForm = props => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              {!isUpdate && (<Grid item xs={12}>
                 <input
                   className={classes.input}
                   id="contained-button-file"
@@ -237,8 +298,8 @@ const EventForm = props => {
                     Upload Event Poster
                   </Button>
                 </label>
-              </Grid>
-              {image && (
+              </Grid>)}
+              {image && !isUpdate && (
                 <React.Fragment>
                   <Grid item xs={12}>
                     <IconButton 
@@ -249,9 +310,6 @@ const EventForm = props => {
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </Grid>
-                  <Grid item xs={12}>
-                    <img src={image} alt="Form" />
-                  </Grid>
                 </React.Fragment>
               )}
             </Grid>
@@ -260,7 +318,7 @@ const EventForm = props => {
             <Grid item xs={12} sm={6}>
               <Button
                 variant="contained"
-                onClick={redirectToClub}
+                // onClick={redirectToClub}
               >
                 Back to Dashboard
               </Button>
@@ -273,13 +331,15 @@ const EventForm = props => {
                 disabled={isFormValid()}
               >
 
-                Create
+                {isUpdate ?'Update': 'Create'}
               </Button>
             </Grid>
           </CardActions>
 
         </Card>
-      </main>
+        </div>
+        </div>
+      )}
     </React.Fragment>
   );
 }

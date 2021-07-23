@@ -7,7 +7,6 @@ import bcrypt from 'bcrypt';
 export const validateClubObject = async club => {
   const { name } = club;
   const alreadyExistingClub = await Club.find({ name: name });
-  console.log(alreadyExistingClub);
   if (alreadyExistingClub.length<=0) {
     return { valid: true };
   }

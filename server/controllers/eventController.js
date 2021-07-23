@@ -11,7 +11,7 @@ export const saveEvent = async (req, res) => {
     const club = await Club.findById(clubId);
     if (club) {
       if (req.body['_id']) {
-        event = await Event.finfById(req.body['_id']).exec();
+        event = await Event.findById(req.body['_id']).exec();
 
         if (!event) {
           res.status(404).json({
@@ -27,19 +27,28 @@ export const saveEvent = async (req, res) => {
       }
       else {
         event = new Event({ _id: new mongoose.Types.ObjectId(), ...req.body });
-      }
-      if(req.file){
-        const {originalname: fileName, mimetype: type, path } = req.file;
-        const extension = fileName.split('.').pop();
-        const resource = new Resource({fileName, type, path, extension});
-        await resource.save();
-        if (event.publicFiles.length === 0){
+        if(req.file){
+          const {originalname: fileName, mimetype: type, path } = req.file;
+          const extension = fileName.split('.').pop();
+          const resource = new Resource({fileName, type, path, extension});
+          await resource.save();
           event.publicFiles.push(resource['_id']);
+          //functionality to update event poster as well...needs some work
+          // else{
+          //   const currentResourceId = event.publicFiles[0]['_id'];
+          //   console.log(currentResourceId);
+          //   await Resource.findByIdAndDelete(currentResourceId);
+          //   event.publicFiles = [];
+          //   event.publicFiles.push(resource['_id']);
+          // }
         }
       }
+      
       await event.save();
-      club.events.push(event['_id']); //updating club data object as well
-      await club.save();
+      if (!req.body['_id']){
+        club.events.push(event['_id']); //updating club data object as well
+        await club.save();
+      }
       res.status(201).json({
         success: true,
         data: event
