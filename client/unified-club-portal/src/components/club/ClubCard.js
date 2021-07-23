@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 const ClubCard = props => {
   const history = useHistory();
   const classes = useStyles();
-  const { name, desc, _id } = props.club;
+  const { name, desc, _id, clubType } = props.club;
 
   const redirectToClubsData = () => {
     setTimeout(() => {
@@ -55,6 +55,27 @@ const ClubCard = props => {
     }, 500);
   };
 
+  let mediaImage = '';
+  switch(clubType){
+    case 'Music':
+        mediaImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Musical_notes.svg/1280px-Musical_notes.svg.png';
+        break;
+    case 'Sports':
+      mediaImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Sport_balls.svg/1200px-Sport_balls.svg.png';
+      break;
+    case 'SelfImprov':
+      mediaImage = '"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjZfVulolQIcCtP-m2OpHUW90cHenKKY8byg&usqp=CAU';
+      break;
+    case 'Fun':
+      mediaImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMvw26w2i8FfL7_Kr4tZ3CqBOXHLVovHyJDQ&usqp=CAU';
+      break;
+    default: 
+      mediaImage = 'https://thumbs.dreamstime.com/z/neon-sign-word-club-dark-background-background-your-design-greeting-card-banner-neon-sign-word-club-dark-150811899.jpg';
+      break; 
+  }
+
+  
+  
   return (
     <Box className={classes.root}>
       <Card>
@@ -69,13 +90,13 @@ const ClubCard = props => {
         />
         <CardMedia
           className={classes.media}
-          image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Musical_notes.svg/1280px-Musical_notes.svg.png"
-          title="Music"
+          image={mediaImage}
+          title="Club"
           onClick={redirectToClubsData}
         />
 
         <CardContent style={{ textAlign: "left" }}>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="h6" color="textSecondary" component="p">
             {desc}
           </Typography>
         </CardContent>

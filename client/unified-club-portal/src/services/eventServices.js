@@ -22,7 +22,7 @@ export const createNewEvent = async event => {
   const formData = new FormData();
   const headers = new Headers();
   headers.append('authorization', `${token}`);
-  const { name, desc, from, to, eventPoster, capacity, clubId } = event;
+  const { name, desc, from, to, eventPoster, capacity, clubId, venue } = event;
   formData.append('file', eventPoster);
   formData.append('name', name);
   formData.append('clubId', clubId);
@@ -30,6 +30,7 @@ export const createNewEvent = async event => {
   formData.append('from', from)
   formData.append('to', to);
   formData.append('capacity', capacity);
+  formData.append('venue', venue);
   if (event['_id']) {
     formData.append('_id', event['_id']);
   }
@@ -89,7 +90,7 @@ export const registerUser = async (userId, eventId) => {
 }
 
 export const validateEventObject = event => {
-  const { name, desc, capacity, from, to } = event;
+  const { name, desc, capacity, from, to, venue } = event;
   const errors = [];
   if (isBlank(name) || isEmpty(name)) {
     errors.push('Name Cannot be Blank');
@@ -97,12 +98,14 @@ export const validateEventObject = event => {
   if (isBlank(desc) || isEmpty(desc)) {
     errors.push('Description Cannot be Blank');
   }
+  if (isBlank(venue) || isEmpty(venue)) {
+    errors.push('Venue Cannot be Blank');
+  }
   if (capacity <= 1) {
     errors.push('Capacity must be greater than 1');
   }
   if (!to || !from) {
     errors.push('Field Cannot be empty');
-
   }
   else {
     const toTimeStamp = new Date(to).getTime();
@@ -112,5 +115,34 @@ export const validateEventObject = event => {
     }
   }
   return errors;
+}
 
+
+export const getEventStatus = (startDate, endDate) => {
+  const currentTime = new Date().getTime();
+  const startTime = new Date(startDate).getTime();
+  const endTime = new Date(endDate).getTime();
+  if (currentTime + 7200000 >= startTime && currentTime + 7200000 < endTime) {
+    return 0;
+  }
+  else if (currentTime + 7200000 < startTime) {
+    return -1;
+  }
+  else if (currentTime > endTime) {
+    return 2;
+  }
+  else if (currentTime > startTime && currentTime < endTime) {
+    return 1;
+  }
+}
+
+export const getDateTimeLocal = time => {
+  const d = new Date(time);
+  const localDateTime = [(d.getMonth() + 1).AddZero(),
+    d.getDate().AddZero(),
+    d.getFullYear()].join('/') + ', ' +
+      [d.getHours().AddZero(),
+      d.getMinutes().AddZero()].join(':');
+    
+    return localDateTime;
 }
