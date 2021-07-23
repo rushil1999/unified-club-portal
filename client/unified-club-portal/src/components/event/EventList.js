@@ -2,21 +2,18 @@ import React, { useState, useEffect } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import { fetchEventList } from '../../services/eventServices';
 import { red } from '@material-ui/core/colors';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import { Button, CircularProgress } from '@material-ui/core';
+import EventCard from './EventCard';
 import { useHistory } from 'react-router';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '50%',
-    backgroundColor: theme.palette.background.paper,
     margin: 'auto',
   },
   inline: {
@@ -63,14 +60,13 @@ const EventList = props => {
         />
         <List className={classes.root}>
           {eventList.map(event => {
-            return(
+            return (
+              
             <ListItem alignItems="flex-start" key={event['_id']}>
               <Button
                 onClick={()=>{redirectToEventData(event['_id'])}}
               >
-                <ListItemText
-                  primary={event.name}
-                />
+                <EventCard event={event} onClick={()=>{redirectToEventData(event['_id'])}} />
               </Button>
             </ListItem>);
           })}

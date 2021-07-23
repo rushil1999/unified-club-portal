@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
+    "&:hover": {
+      cursor: "pointer"
+    },
   },
   go_to: {
     marginLeft: "auto",
@@ -36,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: red[500],
     marginRight: "0",
   },
+  title: {
+    display: "flex",
+  }
 }));
 
 const ClubCard = props => {
@@ -53,6 +59,7 @@ const ClubCard = props => {
     <Box className={classes.root}>
       <Card>
         <CardHeader
+          classes={{ title: classes.title}}
           avatar={
             <Avatar aria-label="recipe" className={classes.avatar}>
               {name[0]}
@@ -64,6 +71,7 @@ const ClubCard = props => {
           className={classes.media}
           image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Musical_notes.svg/1280px-Musical_notes.svg.png"
           title="Music"
+          onClick={redirectToClubsData}
         />
 
         <CardContent style={{ textAlign: "left" }}>

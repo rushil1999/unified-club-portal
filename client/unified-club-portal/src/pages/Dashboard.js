@@ -142,8 +142,8 @@ export default function Dashboard(props) {
                 </Typography>
 
                 <IconButton color="inherit">
-                  {user.name}
                   <PersonIcon />
+                  {user.name}
                 </IconButton>
                 <IconButton color="inherit" onClick={logout}>
                   Logout
