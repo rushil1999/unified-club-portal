@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router';
 import { AuthContext } from '../components/auth/ProvideAuth';
+import { fetchResource } from '../services/resourceServices';
+import { DB_URL } from '../services/constants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +24,17 @@ const useStyles = makeStyles((theme) => ({
   control: {
     padding: theme.spacing(2),
   },
+  image: {
+    width: '100%',
+    height: '300px'
+  },
+  registerButton: {
+    margin: 'auto',
+  },
+  memberSection: {
+    width: '50%',
+    margin: 'auto'
+  }
 }));
 
 
@@ -32,6 +45,7 @@ const EventData = props => {
 
   const [eventState, setEventState] = useState();
   const [loading, setLoading] = useState(true);
+  const [imagePath, setImagePath] = useState();
   const { user } = contextValue;
 
   useEffect(() => {
@@ -40,6 +54,17 @@ const EventData = props => {
       const response = await fetchEventDetails(id);
       if (response.success === true && !response.message) {
         setEventState(response.data);
+        const { publicFiles } = response.data;
+        if (publicFiles.length > 0) {
+          const resourceResponse = await fetchResource(publicFiles[0]['_id']);
+          if (resourceResponse) {
+            const { path } = resourceResponse.data;
+            setImagePath(path);
+          }
+          else {
+            console.log(resourceResponse.errors);
+          }
+        }
         setLoading(false);
       }
       else if (response.message) {
@@ -68,41 +93,39 @@ const EventData = props => {
       window.alert(response.errors);
     }
   }
-
-
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
-        <>
-          <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={12}>
-              <Grid container justifyContent="center" spacing={5} alignItems="center">
-                <Grid key="club-info" item xs={12} md={8}>
-                  <EventInfo event={eventState} />
-                </Grid>
-              </Grid>
-            </Grid>
-            {!eventState.participants.includes(user['_id']) && (
-              <Grid container item className={classes.root} >
-                <Grid item xs={6}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={registerUserToEvent}
-                  >
-                    Register
-                  </Button>
-                </Grid>
-              </Grid>
-            )}
-
-            <Grid container item className={classes.root}>
-              <Grid item xs={6} >
-                <UserList ids={eventState.participants} />
-              </Grid>
+        <div >
+          {imagePath && (<><img className={classes.image} src={`${DB_URL}/${imagePath}`} alt="event" />
+          <br></br>
+          <br></br></>)}
+          <Grid container justifyContent="center" spacing={5} alignItems="center">
+            <Grid key="club-info" item xs={12} md={8}>
+              <EventInfo event={eventState} />
             </Grid>
           </Grid>
-        </>
+          <br></br>
+          {!eventState.participants.includes(user['_id']) && (
+            <Grid container item className={classes.registerButton} >
+              <Grid item xs={6}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={registerUserToEvent}
+                >
+                  Register
+                </Button>
+              </Grid>
+
+            </Grid>
+          )}
+          <Grid container item className={classes.memberSection} justifyContent="center">
+            <Grid item xs={12} >
+              <UserList ids={eventState.participants} />
+            </Grid>
+          </Grid>
+        </div>
       )}
     </React.Fragment>
   );

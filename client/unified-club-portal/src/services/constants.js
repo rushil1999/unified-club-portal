@@ -1,4 +1,4 @@
-const DB_URL = 'http://localhost:5000' ;
+export const DB_URL = 'http://localhost:5000' ;
 export const SIGNUP_URL = DB_URL + '/auth/signup';
 export const SIGNIN_URL = DB_URL + '/auth/signin';
 export const VERIFY_TOKEN = DB_URL + '/auth/verifyToken';
@@ -14,6 +14,8 @@ export const USER_LIST_URL = DB_URL + '/user/userList';
 export const NEW_EVENT_URL = DB_URL + '/event';
 export const EVENT_LIST_URL = DB_URL + '/events/list';
 export const EVENT_REGISTER_URL = DB_URL + '/event/register';
+
+export const GET_RESOURCE_URL = DB_URL + '/resource';
 
 
 

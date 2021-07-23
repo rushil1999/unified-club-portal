@@ -32,16 +32,16 @@ const ClubInfo = props => {
     <React.Fragment>
       <Card className={classes.root} variant="outlined">
         <CardContent>
-          <Typography variant="h5" component="h1" key="name">
+          <Typography component="h3" variant="h4" color="primary" key="name">
             {club.name}
           </Typography>
-          <Typography variant="body2" component="p" key="desc" className={classes.pos}>
+          <Typography variant="h5" component="p" key="desc" color="secondary"className={classes.pos}>
             {club.desc}
           </Typography>
-          <Typography variant="body2" component="p" key="memberCapacity">
+          <Typography variant="h6" component="p" color="textPrimary"key="memberCapacity">
             Capacity :{club.memberCapacity}
           </Typography>
-          <Typography variant="body2" component="p" key="membetsEnrolled">
+          <Typography variant="h6" component="p" color="textPrimary" key="membetsEnrolled">
             Enrolled :{club.members.length}
           </Typography>
         </CardContent>

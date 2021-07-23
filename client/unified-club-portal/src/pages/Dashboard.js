@@ -137,16 +137,21 @@ export default function Dashboard(props) {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
                   Dashboard
                 </Typography>
 
                 <IconButton color="inherit">
                   <PersonIcon />
-                  {user.name}
+                  <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                    {user.name}
+                  </Typography>
+
                 </IconButton>
                 <IconButton color="inherit" onClick={logout}>
-                  Logout
+                  <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                    Logout
+                  </Typography>
                 </IconButton>
 
               </Toolbar>

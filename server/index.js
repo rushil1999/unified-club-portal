@@ -4,6 +4,7 @@ import clubRouter from './routes/clubRoutes';
 import authRouter from './routes/authRoutes';
 import userRouter from './routes/userRoutes';
 import eventRouter from './routes/eventRoutes';
+import resourceRouter from './routes/resourceRoutes';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -45,7 +46,7 @@ mongoose.connect(CONNECTION_URL, connectionParams)
 
 mongoose.set('useFindAndModify', false);
 
-app.use( express.static(__dirname + '/public/uploads'));
+app.use('/public/uploads',  express.static(__dirname + '/public/uploads'));
 
 //setting primary routes
 app.use('/clubs', clubRouter);
@@ -54,6 +55,7 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/event', eventRouter);
 app.use('/events', eventRouter);
+app.use('/resource', resourceRouter);
 
 
 
