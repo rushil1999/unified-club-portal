@@ -5,7 +5,7 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { fetchClubList } from "../services/clubServices";
 import ClubCard from '../components/club/ClubCard';
 
-export default function BoxGrid() {
+export default function ClubGrid() {
   const [clubList, setClubList] = useState([]);
   const [loading, setLoading] = useState(true);
 

@@ -66,7 +66,7 @@ const EventList = props => {
               <Button
                 onClick={()=>{redirectToEventData(event['_id'])}}
               >
-                <EventCard event={event} onClick={()=>{redirectToEventData(event['_id'])}} />
+                <EventCard event={event}  />
               </Button>
             </ListItem>);
           })}

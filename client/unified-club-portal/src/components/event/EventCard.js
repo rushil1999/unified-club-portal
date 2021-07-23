@@ -43,7 +43,7 @@ export default function FeaturedPost(props) {
   const toDateString = `${toDate.getDate()}/${toDate.getMonth()}/${toDate.getFullYear()} ${toDate.getHours()}:${toDate.getMinutes()} `;
 
   return (
-    <Grid item xs={12}>
+    <Grid item>
         <Card className={classes.card}>
           <div className={classes.cardDetails}>
             <CardContent>

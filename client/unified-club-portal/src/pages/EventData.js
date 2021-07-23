@@ -113,7 +113,7 @@ const EventData = props => {
           </Grid>
           <br></br>
           <Grid container item className={classes.registerButton} >
-            {!eventState.participants.includes(user['_id']) &&
+            {(!eventState.participants.includes(user['_id']) || !user.role === 'admin') &&
               (<Grid item xs={6}>
                 <Button
                   variant="contained"

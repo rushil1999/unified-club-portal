@@ -143,7 +143,7 @@ const ClubData = props => {
                 <UserList ids={clubState.members} />
               </Grid>
               <Grid item xs={6}>
-                <EventList ids={clubState.events} club={clubState}/>
+                <EventList xs={12} ids={clubState.events} club={clubState}/>
               </Grid>
             </Grid>
           </Grid>

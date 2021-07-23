@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { AuthContext } from '../components/auth/ProvideAuth';
-import EventList from '../components/event/EventList';
+import EventGrid from '../components/event/EventGrid';
 
 const UserEvents = props => {
   const contextValue = useContext(AuthContext);
@@ -9,7 +9,7 @@ const UserEvents = props => {
   return(
     <React.Fragment>
       {registeredEvents.length>0 ?
-        (<EventList ids={registeredEvents}/>) : 
+        (<EventGrid  ids={registeredEvents}/>) : 
         (<h3>No Events</h3>)
       }
          
