@@ -42,7 +42,7 @@ function App() {
               }}>
             </PrivateRoute>
             <PrivateRoute
-              path='/club/new'
+              path='/club/form/:id'
               exact
               component={() => {
                 return (

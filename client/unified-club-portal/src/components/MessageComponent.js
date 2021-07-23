@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -16,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MessageComponent = props => {
   const classes = useStyles();
-  const { messageContent, setMessageState } = props;
+  const { messageContent, setMessagePopupState } = props;
 
   const [open, setOpen] = React.useState(props.open);
 
@@ -27,7 +26,7 @@ const MessageComponent = props => {
     }
 
     setOpen(false);
-    setMessageState(false);
+    setMessagePopupState(false);
   };
 
   return (

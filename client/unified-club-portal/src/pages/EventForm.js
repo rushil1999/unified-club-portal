@@ -15,6 +15,7 @@ import { fetchEventDetails } from '../services/eventServices';
 import { fetchResource } from '../services/resourceServices'; 
 import { DB_URL } from '../services/constants';
 import { CircularProgress } from '@material-ui/core';
+import MessageComponent from '../components/MessageComponent';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,18 +80,12 @@ const EventForm = props => {
     from: null,
     eventPoster: null,
   });
-  const [errorState, setErrorState] = useState({
-    name: '',
-    desc: '',
-    capacity: '',
-    to: '',
-    from: '',
-    eventPoster: '',
-  });
 
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isUpdate, setIsUpdate ] = useState(false); 
+  const [messagePopupState, setMessagePopupState] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(()=>{
     const getEventDetails = async id => {
@@ -112,10 +107,13 @@ const EventForm = props => {
         setLoading(false);
       }
       else if (response.message) {
-        window.alert(response.message);
+        setMessage(response.message);
+        setMessagePopupState(true);
       }
       else {
         console.log(response.errors);
+        setMessage(response.errors[0]);
+        setMessagePopupState(true);
       }
     };
 
@@ -133,21 +131,6 @@ const EventForm = props => {
   const formChangeHandler = event => {
     const fieldName = event.target.name;
     const fieldValue = event.target.value;
-    // if (fieldName === 'to') {
-    //   if (eventState['from']) {
-    //     const toTimeStamp = new Date(eventState['to']).getTime();
-    //     const fromTimeStamp = new Date(eventState['from']).getTime();
-    //     if (toTimeStamp < fromTimeStamp) {
-    //       setErrorState({ ...errorState, to: 'Date must be after start date' });
-    //     }
-    //     else {
-    //       setErrorState({ ...errorState, to: '' })
-    //     }
-    //   }
-    //   else {
-    //     setErrorState({ ...errorState, to: 'Fill in Start Date first' });
-    //   }
-    // }
     setEventState({ ...eventState, [fieldName]: fieldValue });
   }
 
@@ -164,16 +147,22 @@ const EventForm = props => {
       }
       const response = await createNewEvent(eventState);
       if (response.success === true) {
-        window.alert('Event Creation Successfull');
-        console.log('Event Creation successfull');
+        console.log(`Event ${isUpdate ? 'Updation': 'Creation'}`);
+        setMessage(`Event ${isUpdate ? 'Updation': 'Creation'}`);
+        setMessagePopupState(true);
+        // window.alert('Event Creation Successfull');
         redirectToClub();
       }
       else {
         console.log(response.errors);
+        setMessage(response.errors[0]);
+        setMessagePopupState(true);
       }
     }
     else{
       console.log(errors[0]);
+      setMessage(errors[0]);
+      setMessagePopupState(true);
     }
     
   }
@@ -183,13 +172,6 @@ const EventForm = props => {
     }, 500);
   }
 
-  const isFormValid = () => {
-    for (const key in errorState) {
-      if (errorState[key] !== '') {
-        return false;
-      }
-    }
-  }
 
   const clearImage = () => {
     setImage(null);
@@ -200,11 +182,12 @@ const EventForm = props => {
     <React.Fragment>
       {loading ? <CircularProgress/> : ( 
         <div>
+        {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
         {image && (<><img className={classes.image} src={image} alt="event" /></>)}
         <div className={classes.layout}>
         <Card className={classes.root} variant="outlined">
           <CardContent>
-            <Typography component="h1" variant="h4" align="center">
+            <Typography component="h1" variant="h4" align="center"  color="primary">
               {`${isUpdate? 'Update': 'New'} Event`}
             </Typography>
             <Grid container spacing={3}>
@@ -271,8 +254,6 @@ const EventForm = props => {
                     shrink: true,
                   }}
                   onChange={formChangeHandler}
-                  error={!!errorState['to']}
-                  helperText={errorState['to']}
                 />
               </Grid>
 
@@ -314,9 +295,9 @@ const EventForm = props => {
             <Grid item xs={12} sm={6}>
               <Button
                 variant="contained"
-                // onClick={redirectToClub}
+                onClick={redirectToClub}
               >
-                Back to Dashboard
+                Back to Club
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -324,9 +305,7 @@ const EventForm = props => {
                 variant="contained"
                 color="primary"
                 onClick={formSubmitHandler}
-                disabled={isFormValid()}
               >
-
                 {isUpdate ?'Update': 'Create'}
               </Button>
             </Grid>

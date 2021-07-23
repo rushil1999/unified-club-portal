@@ -18,7 +18,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Clubs" />
     </ListItem>
-    <ListItem button component={Link} to={"/club/new"}>
+    <ListItem button component={Link} to={"/club/form/new"}>
       <ListItemIcon>
         <AddCircleOutlinedIcon />
       </ListItemIcon>

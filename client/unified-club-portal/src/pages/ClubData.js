@@ -89,6 +89,10 @@ const ClubData = props => {
     history.push(`/event/new/${clubState['_id']}/new`)
   }
 
+  const redirectToUpdateClubForm = () => {
+    history.push(`/club/form/${clubState['_id']}`)
+  }
+
   const isUserAlreadyEnrolled = clubState?.members.includes(user['_id']);
 
   return (
@@ -104,8 +108,8 @@ const ClubData = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item className={classes.root} >
-              <Grid item xs={6}>
+            <Grid container item className={classes.root} xs={12} spacing={3}>
+              <Grid item xs={4} >
                 <Button
                   variant="contained"
                   color="primary"
@@ -114,7 +118,7 @@ const ClubData = props => {
                   {isUserAlreadyEnrolled ? 'Leave' : 'Enroll'}
                 </Button>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4} >
                 <Button
                   variant="contained"
                   color="primary"
@@ -123,6 +127,16 @@ const ClubData = props => {
                   Organize an Event
                 </Button>
               </Grid>
+              {user.role === 'admin' && (
+              <Grid item xs={4}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={redirectToUpdateClubForm}
+                >
+                  Edit Club
+                </Button>
+              </Grid>)}
             </Grid>
             <Grid container item className={classes.root} spacing={2}>
               <Grid item xs={6} >

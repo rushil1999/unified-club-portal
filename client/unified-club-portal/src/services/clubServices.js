@@ -1,5 +1,6 @@
 import { getToken } from "./authServices";
 import { CLUB_LIST_URL, NEW_CLUB_URL, CLUB_ENROLL_URL, CLUB_LEAVE_URL } from "./constants"
+import { isEmpty, isBlank } from "./validationFunctions";
 
 export const fetchClubList = async () => {
 
@@ -76,4 +77,23 @@ export const removeMemberFromClub = async (userId, clubId) => {
   const response = await fetch(CLUB_LEAVE_URL, apiParams);
   const resp = await response.json();
   return resp;
+}
+
+export const validateClubObject = club => {
+  const {name, desc, memberCapacity, clubType} = club;
+  const errors = [];
+  if(isEmpty(name) || isBlank(name)){
+    errors.push('Name cannot be blank');
+  } 
+  if(isEmpty(desc) || isBlank(desc)){
+    errors.push('Description cannot be blank');
+  } 
+  if(memberCapacity <= 10){
+    errors.push('Member Capacity must be greater than 10');
+  } 
+  if(isEmpty(clubType) || isBlank(clubType)){
+    errors.push('Club Type cannot be blank');
+  } 
+  return errors; 
+
 }
