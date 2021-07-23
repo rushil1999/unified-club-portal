@@ -13,6 +13,9 @@ import { useHistory } from 'react-router';
 
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset'
+  },
   root: {
     margin: 'auto',
   },
@@ -54,7 +57,7 @@ const EventList = props => {
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
-      <Card>
+      <Card className={classes.card}>
         <CardHeader
           title='Events'
         />

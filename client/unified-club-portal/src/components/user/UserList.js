@@ -14,13 +14,14 @@ import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '50%',
-    maxWidth: '36ch',
+    maxWidth: '250px',
     backgroundColor: theme.palette.background.paper,
-    margin: 'auto',
+    margin: '10px',
     borderRadius: '10px',
-    padding: '15px',
-    borderStyle: 'ridge',
+    padding: '10px',
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+    display: 'inline-flex',
+    alignItems: 'center'
   },
   inline: {
     display: 'inline',
@@ -29,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   listItem: {
-    padding: '12px'
+    padding: '10px',
+    boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset'
   }
 }));
 
@@ -62,11 +64,9 @@ const UserList = props => {
             title='Members / Participants'
           />
           
-          <List  >
-            {/* {userList.length} */}
+          <List>
             {userList.map(user => {
               return (
-                <div >
                   <ListItem className={classes.root} alignItems="flex-start" key={user['_id']}>
                     <ListItemAvatar>
                       <Avatar aria-label="recipe" className={classes.avatar}>
@@ -77,7 +77,7 @@ const UserList = props => {
                       primary={user.name}
                     />
                   </ListItem>
-                  </div>);
+                );
             })}
           </List>
         </Card>)}
