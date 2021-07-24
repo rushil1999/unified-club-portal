@@ -10,6 +10,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { Button, CircularProgress } from '@material-ui/core';
 import EventCard from './EventCard';
 import { useHistory } from 'react-router';
+import MessageComponent from '../MessageComponent';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,21 +31,25 @@ const useStyles = makeStyles((theme) => ({
 
 const EventList = props => {
   const classes = useStyles();
+  const history = useHistory();
   const { ids } = props;
   const [eventList, setEventList] = useState(); //Array of user Objects
   const [loading, setLoading] = useState(true);
-  const history = useHistory();
+  const [messagePopupState, setMessagePopupState] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
       const response = await fetchEventList(ids || []);
-      if (response.success === true) {
-        setEventList(response.data);
+      if (response.status === 200) {
+        setEventList(response.data.data);
         setLoading(false);
       }
-      else {
-        console.log('Error', response.errors);
+      else if (response.status === 500) {
+        console.log(response.data.errors[0]);
+        setMessage('Internal Server Error');
+        setMessage(true);
       }
     };
     getData();
@@ -57,24 +62,27 @@ const EventList = props => {
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
-      <Card className={classes.card}>
-        <CardHeader
-          title='Events'
-        />
-        <List className={classes.root}>
-          {eventList.map(event => {
-            return (
-              
-            <ListItem alignItems="flex-start" key={event['_id']}>
-              <Button
-                onClick={()=>{redirectToEventData(event['_id'])}}
-              >
-                <EventCard event={event}  />
-              </Button>
-            </ListItem>);
-          })}
-        </List>
-      </Card>)}
+        <div>
+          {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState} />}
+          <Card className={classes.card}>
+            <CardHeader
+              title='Events'
+            />
+            <List className={classes.root}>
+              {eventList.map(event => {
+                return (
+
+                  <ListItem alignItems="flex-start" key={event['_id']}>
+                    <Button
+                      onClick={() => { redirectToEventData(event['_id']) }}
+                    >
+                      <EventCard event={event} />
+                    </Button>
+                  </ListItem>);
+              })}
+            </List>
+          </Card>
+        </div>)}
     </React.Fragment>
   );
 }

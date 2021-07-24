@@ -161,7 +161,6 @@ export const registerUserToEvent = async (req, res) => {
 
 export const saveFeedback = async (req, res) => {
   const { userId, eventId, stars, comments } = req.body;
-  console.log(req.body);
   try {
     const feedback = await Feedback.find({ userId, eventId });
     console.log('Feedback', feedback);
@@ -189,12 +188,9 @@ export const saveFeedback = async (req, res) => {
 
 export const getUserFeedbackForEvent = async (req, res) => {
   const { userId, eventId } = req.params;
-  console.log(req.params);
   try {
     const feedback = await Feedback.find({ userId, eventId });
-    console.log(feedback);
     if (feedback.length > 0) {
-      console.log('Final',feedback[0]);
       return res.status(200).json({
         success: true,
         data: feedback[0]

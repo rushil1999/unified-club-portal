@@ -13,6 +13,9 @@ export const fetchResource = async id => {
 
   const url = `${GET_RESOURCE_URL}/${id}`;
   const response = await fetch(url, apiParams);
-  const res = await response.json();
-  return res;
+  const resp = await response.json();
+  return ({
+    status: response.status,
+    data:resp
+  })
 }

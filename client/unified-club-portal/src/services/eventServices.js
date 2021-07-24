@@ -41,7 +41,10 @@ export const saveEvent = async event => {
   };
   const response = await fetch(NEW_EVENT_URL, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp,
+  }
 }
 
 export const fetchEventList = async ids => {
@@ -56,7 +59,10 @@ export const fetchEventList = async ids => {
   };
   const response = await fetch(EVENT_LIST_URL, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp,
+  }
 }
 
 export const fetchEventDetails = async id => {
@@ -70,8 +76,11 @@ export const fetchEventDetails = async id => {
   };
   const url = `${NEW_EVENT_URL}/${id}`;
   const response = await fetch(url, apiParams);
-  const res = await response.json();
-  return res;
+  const resp = await response.json();
+  return {
+    status: response.status,
+    data: resp,
+  }
 }
 
 export const registerUser = async (userId, eventId) => {
@@ -85,8 +94,11 @@ export const registerUser = async (userId, eventId) => {
     body: JSON.stringify({ userId, eventId })
   }
   const response = await fetch(EVENT_REGISTER_URL, apiParams);
-  const res = await response.json();
-  return res;
+  const resp = await response.json();
+  return {
+    status: response.status,
+    data: resp,
+  }
 }
 
 export const validateEventObject = event => {
@@ -148,7 +160,10 @@ export const sendUserFeedback = async feedback => {
   }
   const response = await fetch(NEW_FEEDBACK, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  };
 }
 
 
@@ -165,7 +180,8 @@ export const getUserFeedbackForEvent = async(userId, eventId) => {
   console.log(url);
   const response = await fetch(url, apiParams);
   const resp = await response.json();
-  console.log(response.status);
-  console.log(resp);
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  };
 }

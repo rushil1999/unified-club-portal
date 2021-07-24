@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { makeStyles, responsiveFontSizes } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import EventInfo from '../components/event/EventInfo';
 import UserList from '../components/user/UserList';
@@ -58,42 +58,45 @@ const EventData = props => {
   const { user } = contextValue;
 
   useEffect(() => {
-    
-
     getEventDetails();
   }, [id]);
 
   const registerUserToEvent = async () => {
     const response = await registerUser(user['_id'], eventState['_id']);
-    if (response.success === true) {
-      window.alert('Registered in Event');
-      setEventState(response.data);
+    if (response.status === 200) {
+      setEventState(response.data.data);
+      setMessage('Registered in Event');
+      setMessagePopupState(true);
     }
     else if (response.status === 412) {
-      console.log(response.message);
-      window.alert(response.message);
+      console.log(response.data.message);
+      setMessage(response.data.message);
+      setMessagePopupState(true);
     }
-    else {
-      console.log(response.errors);
-      window.alert(response.errors);
+    else if(response.status === 500){
+      console.log(response.data.errors);
+      setMessage('Internal Server Error');
+      setMessagePopupState(true);
     }
   }
 
   const getEventDetails = async () => {
     setLoading(true);
     const response = await fetchEventDetails(id);
-    if (response.success === true && !response.message) {
-      setEventState(response.data);
-      setEventStatusState(getEventStatus(response.data.from, response.data.to));
-      const { publicFiles } = response.data;
+    if (response.status === 200) {
+      setEventState(response.data.data);
+      setEventStatusState(getEventStatus(response.data.data.from, response.data.data.to));
+      const { publicFiles } = response.data.data;
       if (publicFiles.length > 0) {
         const resourceResponse = await fetchResource(publicFiles[0]['_id']);
-        if (resourceResponse) {
-          const { path } = resourceResponse.data;
+        if (resourceResponse.status === 200) {
+          const { path } = resourceResponse.data.data;
           setImagePath(path);
         }
-        else {
-          console.log(resourceResponse.errors);
+        else if(resourceResponse.status === 500){
+          console.log(resourceResponse.data.errors);
+          setMessage('Could not fetch File');
+          setMessagePopupState(true);
         }
       }
       setLoading(false);
@@ -111,27 +114,11 @@ const EventData = props => {
     history.push(`/event/new/${eventState.clubId}/${eventState['_id']}`)
   }
 
-  const openRatingComponentState = () => {
-    setRatingComponentState(true);
+  const toggleRatingComponentState = () => {
+    setRatingComponentState(!ratingComponentState);
   }
 
-  const submitUserFeedback = async feedback => {
-    feedback['eventId'] = eventState['_id'];
-    feedback['userId'] = user['_id'];
-    const response = await sendUserFeedback(feedback);
-    console.log(response);
-    if(response.success === true){
-      setMessage('Feedback Submitted Successfully');
-      setMessagePopupState(true);
-    }
-    else{
-      setMessage(response.errors[0]);
-      setMessagePopupState(true);
 
-    }
-  }
-
-  console.log(eventStatusState);
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
@@ -172,7 +159,7 @@ const EventData = props => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={openRatingComponentState}
+                onClick={toggleRatingComponentState}
               >
                 Rate Event
               </Button>
@@ -184,7 +171,7 @@ const EventData = props => {
             <Card>
             <Grid item container>
               <Grid item xs={12}>
-                <RatingComponent eventId={eventState['_id']} submitUserFeedback={submitUserFeedback}/>
+                <RatingComponent eventId={eventState['_id']}/>
               </Grid>
             </Grid>
             </Card>

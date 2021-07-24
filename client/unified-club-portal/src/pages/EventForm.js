@@ -92,28 +92,30 @@ const EventForm = props => {
     const getEventDetails = async id => {
       setLoading(true);
       const response = await fetchEventDetails(id);
-      if (response.success === true && !response.message) {
-        setEventState(response.data);
-        const { publicFiles } = response.data;
+      if (response.status === 200) {
+        setEventState(response.data.data);
+        const { publicFiles } = response.data.data;
         if (publicFiles.length > 0) {
           const resourceResponse = await fetchResource(publicFiles[0]['_id']);
-          if (resourceResponse) {
-            const { path } = resourceResponse.data;
+          if (resourceResponse.status === 200) {
+            const { path } = resourceResponse.data.data;
             setImage(`${DB_URL}/${path}`);
           }
-          else {
+          else if(resourceResponse.status === 500){
             console.log(resourceResponse.errors);
+            setMessage('Failed to Load resource');
+            setMessagePopupState(true);
           }
         }
         setLoading(false);
       }
-      else if (response.message) {
-        setMessage(response.message);
+      else if (response.status === 404) {
+        setMessage('Entity Not Found');
         setMessagePopupState(true);
       }
-      else {
+      else if(response.status === 500){
         console.log(response.errors);
-        setMessage(response.errors[0]);
+        setMessage('Internal Server Error');
         setMessagePopupState(true);
       }
     };
@@ -147,16 +149,20 @@ const EventForm = props => {
         setEventState({...eventState, '_id': eventId});
       }
       const response = await saveEvent(eventState);
-      if (response.success === true) {
-        console.log(`Event ${isUpdate ? 'Updation': 'Creation'}`);
+      console.log(response);
+      if (response.status === 201) {
         setMessage(`Event ${isUpdate ? 'Updation': 'Creation'}`);
         setMessagePopupState(true);
         // window.alert('Event Creation Successfull');
         redirectToClub();
       }
-      else {
+      else if(response.status === 404){
+        setMessage('Entity Not Found');
+        setMessagePopupState(true);
+      }
+      else if(response.status === 500){
         console.log(response.errors);
-        setMessage(response.errors[0]);
+        setMessage('Internal Server Error');
         setMessagePopupState(true);
       }
     }

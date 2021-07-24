@@ -5,9 +5,10 @@ import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { AuthContext } from '../auth/ProvideAuth';
-import { getUserFeedbackForEvent } from '../../services/eventServices';
+import { getUserFeedbackForEvent, sendUserFeedback } from '../../services/eventServices';
+import MessageComponent from '../MessageComponent';
 
 
 const labels = {
@@ -45,38 +46,50 @@ const RatingComponent = props => {
   const [message, setMessage] = useState('');
   const [messagePopupState, setMessagePopupState] = useState(false);
   const [isFeedbackGiven, setIsFeedbackGiven] = useState(false);
-  const { submitUserFeedback, eventId } = props;
-  const {user} = contextValue;
+  const { eventId } = props;
+  const { user } = contextValue;
 
   useEffect(() => {
-    const getUserFeedback = async () =>{
+    const getUserFeedback = async () => {
       setLoading(true);
       const response = await getUserFeedbackForEvent(user['_id'], eventId);
-      if(response.success){
-        const {stars, comments} = response.data;
+      if (response.status === 200) {
+        const { stars, comments } = response.data.data;
         setValue(stars);
         setComments(comments);
         setIsFeedbackGiven(true);
         setLoading(false);
       }
-      else{
-        console.log(response);
-        setMessagePopupState(response.errors[0]);
+      else if (response.status === 500) {
+        console.log(response.data.errors[0]);
+        setMessagePopupState('Internal Server Error');
         setMessagePopupState(true);
       }
     }
     getUserFeedback();
-  },[])
-  
-  const sendFeedback = () => {
-    console.log({
+  }, [])
+
+  const submitUserFeedback = async () => {
+    const feedback = {
+      eventId,
+      userId: user['_id'],
       stars: value,
       comments
-    })
-    submitUserFeedback({
-      stars: value,
-      comments
-    });
+    };
+    const response = await sendUserFeedback(feedback);
+    if (response.status === 200) {
+      setMessage('Feedback Submitted Successfully');
+      setMessagePopupState(true);
+    }
+    else if (response.status === 409) {
+      setMessage('You Feedback Already Exists');
+      setMessagePopupState(true);
+    }
+    else if (response.status === 500) {
+      console.log(response.data.errors);
+      setMessage('Internal Server Error');
+      setMessagePopupState(true);
+    }
   }
 
   const onCommentsFieldChange = event => {
@@ -84,56 +97,62 @@ const RatingComponent = props => {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Card>
-        <Grid item container xs={12}>
-          <Grid item xs={6}>
-            <Rating
-              name="hover-feedback"
-              value={value}
-              precision={0.5}
-              onChange={(event, newValue) => {
-                setValue(newValue);
-              }}
-              onChangeActive={(event, newHover) => {
-                setHover(newHover);
-              }}
+    <React.Fragment>
+      {loading ? <CircularProgress /> : (
+        <>
+        {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
+        <Grid container spacing={3}>
+          <Card>
+            <Grid item container xs={12}>
+              <Grid item xs={6}>
+                <Rating
+                  name="hover-feedback"
+                  value={value}
+                  precision={0.5}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  onChangeActive={(event, newHover) => {
+                    setHover(newHover);
+                  }}
+                  disabled={isFeedbackGiven}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
+
+              </Grid>
+
+            </Grid>
+          </Card>
+
+          <Grid item xs={12}>
+            <TextField
+              id="outlined-multiline-static"
+              label="Multiline"
+              multiline
+              rows={4}
+              value={comments}
+              variant="outlined"
+              name="comments"
+              onChange={onCommentsFieldChange}
               disabled={isFeedbackGiven}
             />
           </Grid>
-          <Grid item xs={6}>
-            {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
-
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={submitUserFeedback}
+            >
+              Submit Feedback
+            </Button>
           </Grid>
-
         </Grid>
-      </Card>
+        </>
+      )}
 
-      <Grid item xs={12}>
-        <TextField
-          id="outlined-multiline-static"
-          label="Multiline"
-          multiline
-          rows={4}
-          value={comments}
-          variant="outlined"
-          name="comments"
-          onChange={onCommentsFieldChange}
-          disabled={isFeedbackGiven}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={sendFeedback}
-        >
-          Submit Feedback
-        </Button>
-      </Grid>
-
-
-    </Grid>
+    </React.Fragment>
   );
 }
 export default RatingComponent;
