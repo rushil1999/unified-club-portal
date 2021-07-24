@@ -208,5 +208,28 @@ export const getUserFeedbackForEvent = async (req, res) => {
       errors: [err.message]
     })
   }
+}
 
+export const getEventsFeedbacks = async (req, res) => {
+  const { eventId }= req.params;
+  try {
+    const feedback = await Feedback.find({ eventId });
+    if (feedback.length > 0) {
+      return res.status(200).json({
+        success: true,
+        data: feedback
+      })
+    }
+    else {
+      return res.status(404).json({
+        errors: ['Entity Not Found']
+      })
+    }
+  }
+  catch (err) {
+    console.log('Catch', err.message);
+    return res.status(500).json({
+      errors: [err.message]
+    })
+  }
 }

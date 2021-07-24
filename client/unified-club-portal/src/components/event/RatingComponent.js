@@ -26,13 +26,24 @@ const labels = {
 
 const useStyles = makeStyles({
   root: {
-    width: 200,
+    // width: 200,
     display: 'flex',
     alignItems: 'center',
     height: 500,
   },
   addHeight: {
     height: 300
+  },
+  buttonStyling: {
+    padding: '10px'
+  },
+  ratingStyling: {
+    padding: '10px',
+    margin: 'auto',
+  },
+  textFieldStyling: {
+    width: '600px',
+    margin: 'auto',
   }
 });
 
@@ -82,7 +93,7 @@ const RatingComponent = props => {
       setMessagePopupState(true);
     }
     else if (response.status === 409) {
-      setMessage('You Feedback Already Exists');
+      setMessage('Your Feedback Already Exists');
       setMessagePopupState(true);
     }
     else if (response.status === 500) {
@@ -101,8 +112,9 @@ const RatingComponent = props => {
       {loading ? <CircularProgress /> : (
         <>
         {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
+        <Card>
         <Grid container spacing={3}>
-          <Card>
+          <div className={classes.ratingStyling}>
             <Grid item container xs={12}>
               <Grid item xs={6}>
                 <Rating
@@ -120,13 +132,12 @@ const RatingComponent = props => {
               </Grid>
               <Grid item xs={6}>
                 {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
-
               </Grid>
-
             </Grid>
-          </Card>
+            </div>
 
           <Grid item xs={12}>
+            <div className={classes.textFieldStyling}>
             <TextField
               id="outlined-multiline-static"
               label="Multiline"
@@ -138,17 +149,22 @@ const RatingComponent = props => {
               onChange={onCommentsFieldChange}
               disabled={isFeedbackGiven}
             />
+            </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} >
+            <div className={classes.buttonStyling}>
             <Button
               variant="contained"
               color="primary"
               onClick={submitUserFeedback}
+              disabled={isFeedbackGiven}
             >
               Submit Feedback
             </Button>
+            </div>
           </Grid>
         </Grid>
+        </Card>
         </>
       )}
 
