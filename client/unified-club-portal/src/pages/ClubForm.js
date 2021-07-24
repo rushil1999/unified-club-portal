@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import { isBlank, isEmpty } from '../services/validationFunctions';
-import { createNewClub, validateClubObject, fetchClubDetails } from '../services/clubServices';
+import { saveClub, validateClubObject, fetchClubDetails } from '../services/clubServices';
 import { useHistory, useParams } from 'react-router-dom';
 import MessageComponent from '../components/MessageComponent';
 
@@ -78,15 +78,18 @@ const ClubForm = props => {
     const getClubDetails = async () => {
       setLoading(true);
       const response = await fetchClubDetails(id);
-      if (response.success === true && !response.message) {
-        setClubState(response.data);
+      if (response.status === 201) {
+        setClubState(response.data.data);
         setLoading(false);
       }
-      else if (response.message) {
-        window.alert(response.message);
+      else if (response.status === 412) {
+        setMessage(response.data.message);
+        setMessagePopupState(true);
       }
-      else {
-        console.log(response.errors);
+      else if(response.status === 500){
+        console.log(response.data.errors);
+        setMessage('Internal Server Error');
+        setMessagePopupState(true);
       }
     };
     if (id !== 'new' && id !== null && id !== undefined && id !== '') {
@@ -127,16 +130,16 @@ const ClubForm = props => {
       if(isUpdate){
         club['_id'] = id;
       }
-      const response = await createNewClub(club);
-      if (response.success === true) {
+      const response = await saveClub(club);
+      if (response.status === 200) {
         console.log('Club Creation successfull');
         setMessage('Club Creation Successfull');
         setMessagePopupState(true);
         redirectToDashboard();
       }
-      else {
-        console.log(response.errors);
-        setMessage(response.errors[0]);
+      else if(response.status === 500) {
+        console.log(response.data.errors);
+        setMessage('Internal Server Error');
         setMessagePopupState(true);
       }
     }

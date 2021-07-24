@@ -36,22 +36,24 @@ const ClubData = props => {
 
   const [clubState, setClubState] = useState();
   const [loading, setLoading] = useState(true);
-  const [messageState, setMessageState] = useState(false);
+  const [messagePopupState, setMessagePopupState] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     const getClubDetails = async () => {
       setLoading(true);
       const response = await fetchClubDetails(id);
-      if (response.success === true && !response.message) {
-        setClubState(response.data);
+      if (response.status === 200) {
+        setClubState(response.data.data);
         setLoading(false);
       }
       else if (response.message) {
         window.alert(response.message);
       }
-      else {
-        console.log(response.errors);
+      else if(response.status === 500){
+        console.log(response.data.errors);
+        setMessage('Internal Server Error');
+        setMessagePopupState(true);
       }
     };
 
@@ -61,15 +63,20 @@ const ClubData = props => {
 
   const enrollHandler = async () => {
     const response = await enrollMemberInClub(user['_id'], id);
-    if (response.success === true) {
-      setClubState(response.data);
+    if (response.status === 200) {
+      setClubState(response.data.data);
       setMessage('Enrolled Successfully');
-      setMessageState(true);
-    } else {
-      console.log(response.errors)
-      window.alert('Error Ocurred');
-      setMessage('Some Error Occured');
-      setMessageState(true);
+      setMessagePopupState(true);
+    } 
+    else if(response.status === 500){
+      console.log(response.data.errors)
+      setMessage('Inernal Server Error');
+      setMessagePopupState(true);
+    }
+    else if(response.status === 412){
+      console.log(response.data.message)
+      setMessage(response.data.message);
+      setMessagePopupState(true);
     }
   }
 
@@ -77,11 +84,15 @@ const ClubData = props => {
     const userObj = window.localStorage.getItem('user');
     const user = JSON.parse(userObj);
     const response = await removeMemberFromClub(user['_id'], id);
-    if (response.success === true) {
-      setClubState(response.data);
-    } else {
-      console.log(response.errors)
-      window.alert('Error Ocurred');
+    if (response.status === 200) {
+      setClubState(response.data.data);
+      setMessage('You have left the club');
+      setMessagePopupState(true);
+    } 
+    else if(response.status === 500){
+      console.log(response.data.errors)
+      setMessage('Inernal Server Error');
+      setMessagePopupState(true);
     }
   }
 
@@ -97,7 +108,7 @@ const ClubData = props => {
 
   return (
     <React.Fragment>
-      {messageState && <MessageComponent open={messageState} messageContent={message} setMessageState={setMessageState}/>}
+      {messagePopupState && <MessageComponent open={message} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
       {loading ? <CircularProgress /> : (
         <>
           <Grid container className={classes.root} spacing={2}>

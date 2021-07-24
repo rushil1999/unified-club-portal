@@ -14,10 +14,13 @@ export const fetchClubList = async () => {
   }
   const response = await fetch(CLUB_LIST_URL, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  }
 }
 
-export const createNewClub = async club => {
+export const saveClub = async club => {
   const token = getToken();
   const apiParams = {
     method: 'POST',
@@ -30,7 +33,10 @@ export const createNewClub = async club => {
   }
   const response = await fetch(NEW_CLUB_URL, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  }
 } 
 
 export const fetchClubDetails = async (clubId) => {
@@ -45,7 +51,10 @@ export const fetchClubDetails = async (clubId) => {
   const url = `${NEW_CLUB_URL}/${clubId}`;
   const response = await  fetch(url, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  }
 }
 
 export const enrollMemberInClub = async (userId, clubId) => {
@@ -61,7 +70,10 @@ export const enrollMemberInClub = async (userId, clubId) => {
 
   const response = await fetch(CLUB_ENROLL_URL, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  }
 }
 
 export const removeMemberFromClub = async (userId, clubId) => {
@@ -76,7 +88,10 @@ export const removeMemberFromClub = async (userId, clubId) => {
   };
   const response = await fetch(CLUB_LEAVE_URL, apiParams);
   const resp = await response.json();
-  return resp;
+  return {
+    status: response.status,
+    data: resp
+  }
 }
 
 export const validateClubObject = club => {

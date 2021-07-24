@@ -5,6 +5,7 @@ import EventCard from './EventCard';
 import { useHistory } from 'react-router-dom';
 import { fetchEventList } from "../../services/eventServices";
 import { Button, CircularProgress } from '@material-ui/core';
+import MessageComponent from "../MessageComponent";
 
 
 const useStyles = makeStyles((theme) =>
@@ -28,18 +29,22 @@ const EventGrid = props => {
   const { ids } = props;
   const [eventList, setEventList] = useState(); //Array of user Objects
   const [loading, setLoading] = useState(true);
+  const [messagePopupState, setMessagePopupState] = useState(false);
+  const [message, setMessage] = useState('');
   const history = useHistory();
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
       const response = await fetchEventList(ids || []);
-      if (response.success === true) {
-        setEventList(response.data);
+      if (response.status === 200) {
+        setEventList(response.data.data);
         setLoading(false);
       }
-      else {
-        console.log('Error', response.errors);
+      else if(response.status === 500){
+        console.log('Error', response.data.errors);
+        setMessage('Internal Server Error');
+        setMessagePopupState(true);
       }
     };
     getData();
@@ -54,6 +59,8 @@ const EventGrid = props => {
       {loading ? (
         <CircularProgress />
       ) : (
+        <>
+        {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
         <div>
           <Grid
             key="outerGrid"
@@ -78,8 +85,10 @@ const EventGrid = props => {
             })}
           </Grid>
         </div>
+        </>
       )}
     </div>
+    
   );
 }
 

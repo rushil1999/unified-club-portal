@@ -64,14 +64,14 @@ export const enrollMemberInClub = async (req, res) => {
     }
     else{
       if ((club.members || []).includes(userId)) {
-        res.status(201).json({ success: true, message: 'User is already Enrolled', data: club });
+        res.status(200).json({ success: true, message: 'User is already Enrolled', data: club });
       }
       else {
         club.members.push(userId);
         user.registeredClubs.push(clubId);
         await user.save();
         await club.save();
-        res.status(201).json({ success: true, data: club });
+        res.status(200).json({ success: true, data: club });
       }
     }
     
@@ -98,7 +98,7 @@ export const removeMemberFromClub = async (req, res) => {
         await club.save();
       }
     }
-    res.status(201).json({ success: true, data: club });
+    res.status(200).json({ success: true, data: club });
 
 
   }
