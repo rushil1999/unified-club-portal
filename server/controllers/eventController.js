@@ -3,6 +3,7 @@ import Event from '../models/event';
 import Club from '../models/club';
 import User from '../models/user';
 import Resource from '../models/resource';
+import Feedback from '../models/feedback';
 
 export const saveEvent = async (req, res) => {
   let event;
@@ -10,7 +11,7 @@ export const saveEvent = async (req, res) => {
     const { clubId } = req.body;
     const club = await Club.findById(clubId);
     if (club) {
-      
+
       if (req.body['_id']) {
         event = await Event.findById(req.body['_id']).exec();
 
@@ -27,13 +28,13 @@ export const saveEvent = async (req, res) => {
         }
       }
       else {
-        
+
         event = new Event({ _id: new mongoose.Types.ObjectId(), ...req.body });
-        
-        if(req.file){
-          const {originalname: fileName, mimetype: type, path } = req.file;
+
+        if (req.file) {
+          const { originalname: fileName, mimetype: type, path } = req.file;
           const extension = fileName.split('.').pop();
-          const resource = new Resource({fileName, type, path, extension});
+          const resource = new Resource({ fileName, type, path, extension });
           await resource.save();
           event.publicFiles.push(resource['_id']);
           //functionality to update event poster as well...needs some work
@@ -46,9 +47,9 @@ export const saveEvent = async (req, res) => {
           // }
         }
       }
-      
+
       await event.save();
-      if (!req.body['_id']){
+      if (!req.body['_id']) {
         club.events.push(event['_id']); //updating club data object as well
         await club.save();
       }
@@ -126,7 +127,7 @@ export const registerUserToEvent = async (req, res) => {
         })
       }
       else {
-        if ((event.participants|| []).includes(userId)) {
+        if ((event.participants || []).includes(userId)) {
           res.status(412).json({
             message: 'Limit Exceeded'
           })
@@ -156,4 +157,60 @@ export const registerUserToEvent = async (req, res) => {
       errors: [err.message]
     });
   }
+}
+
+export const saveFeedback = async (req, res) => {
+  const { userId, eventId, stars, comments } = req.body;
+  console.log(req.body);
+  try {
+    const feedback = await Feedback.find({ userId, eventId });
+    console.log('Feedback', feedback);
+    if (feedback.length === 0) {
+      const newFeedback = new Feedback({ userId, eventId, stars, comments });
+      await newFeedback.save();
+      res.status(201).json({
+        success: true,
+        data: newFeedback
+      })
+    }
+    else {
+      res.status(409).json({
+        errors: ['Entity Already Existits']
+      })
+    }
+  }
+  catch (err) {
+    console.log('Catch', err.message);
+    return res.status(500).json({
+      errors: [err.message],
+    });
+  }
+}
+
+export const getUserFeedbackForEvent = async (req, res) => {
+  const { userId, eventId } = req.params;
+  console.log(req.params);
+  try {
+    const feedback = await Feedback.find({ userId, eventId });
+    console.log(feedback);
+    if (feedback.length > 0) {
+      console.log('Final',feedback[0]);
+      return res.status(200).json({
+        success: true,
+        data: feedback[0]
+      })
+    }
+    else {
+      return res.status(404).json({
+        errors: ['Entity Not Found']
+      })
+    }
+  }
+  catch (err) {
+    console.log('Catch', err.message);
+    return res.status(500).json({
+      errors: [err.message]
+    })
+  }
+
 }

@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { useHistory, useParams } from 'react-router-dom';
-import { createNewEvent, validateEventObject, getDateTimeLocal, fetchEventDetails } from '../services/eventServices';
+import { saveEvent, validateEventObject, fetchEventDetails } from '../services/eventServices';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { fetchResource } from '../services/resourceServices'; 
@@ -146,7 +146,7 @@ const EventForm = props => {
       if(isUpdate){
         setEventState({...eventState, '_id': eventId});
       }
-      const response = await createNewEvent(eventState);
+      const response = await saveEvent(eventState);
       if (response.success === true) {
         console.log(`Event ${isUpdate ? 'Updation': 'Creation'}`);
         setMessage(`Event ${isUpdate ? 'Updation': 'Creation'}`);
@@ -244,7 +244,7 @@ const EventForm = props => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={from.split('.')[0]}
+                  value={isUpdate ? (from.split('.')[0]) : null}
                   id="date"
                   label="Start Date"
                   name="from"
@@ -258,7 +258,7 @@ const EventForm = props => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={to.split('.')[0]}
+                  value={isUpdate ? (to.split('.')[0]): null}
                   id="date"
                   label="End Date"
                   name="to"

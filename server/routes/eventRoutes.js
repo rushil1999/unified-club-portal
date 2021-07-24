@@ -1,6 +1,6 @@
 import express from 'express';
 import { checkUserAccess } from '../services/authenticationService';
-import { saveEvent, getEvents, getEventInfo, registerUserToEvent } from '../controllers/eventController';
+import { saveEvent, getEvents, getEventInfo, registerUserToEvent, saveFeedback, getUserFeedbackForEvent } from '../controllers/eventController';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -24,5 +24,7 @@ router.post('/', checkUserAccess, upload.single('file'),  saveEvent);
 router.post('/list', checkUserAccess, getEvents);
 router.get('/:id', checkUserAccess, getEventInfo);
 router.post('/register', checkUserAccess, registerUserToEvent);
+router.post('/feedback', checkUserAccess, saveFeedback);
+router.get('/feedback/:userId/:eventId', checkUserAccess, getUserFeedbackForEvent);
 
 export default router;

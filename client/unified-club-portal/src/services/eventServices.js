@@ -1,5 +1,5 @@
 import { getToken } from "./authServices"
-import { EVENT_LIST_URL, NEW_EVENT_URL, EVENT_REGISTER_URL } from './constants';
+import { EVENT_LIST_URL, NEW_EVENT_URL, EVENT_REGISTER_URL, NEW_FEEDBACK } from './constants';
 import { isBlank, isEmpty } from "./validationFunctions";
 
 // export const createNewEvent = async event => {
@@ -17,7 +17,7 @@ import { isBlank, isEmpty } from "./validationFunctions";
 //   return resp;
 // }
 
-export const createNewEvent = async event => {
+export const saveEvent = async event => {
   const token = getToken();
   const formData = new FormData();
   const headers = new Headers();
@@ -136,13 +136,36 @@ export const getEventStatus = (startDate, endDate) => {
   }
 }
 
-export const getDateTimeLocal = time => {
-  const d = new Date(time);
-  const localDateTime = [(d.getMonth() + 1).AddZero(),
-    d.getDate().AddZero(),
-    d.getFullYear()].join('/') + ', ' +
-      [d.getHours().AddZero(),
-      d.getMinutes().AddZero()].join(':');
-    
-    return localDateTime;
+export const sendUserFeedback = async feedback => {
+  const token = getToken();
+  const apiParams = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': `${token}`
+    },
+    body: JSON.stringify(feedback)
+  }
+  const response = await fetch(NEW_FEEDBACK, apiParams);
+  const resp = await response.json();
+  return resp;
+}
+
+
+export const getUserFeedbackForEvent = async(userId, eventId) => {
+  const token = getToken();
+  const apiParams = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': `${token}`
+    },
+  }
+  const url = `${NEW_FEEDBACK}/${userId}/${eventId}`;
+  console.log(url);
+  const response = await fetch(url, apiParams);
+  const resp = await response.json();
+  console.log(response.status);
+  console.log(resp);
+  return resp;
 }

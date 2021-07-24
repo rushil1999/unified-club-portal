@@ -17,6 +17,8 @@ export const EVENT_REGISTER_URL = DB_URL + '/event/register';
 
 export const GET_RESOURCE_URL = DB_URL + '/resource';
 
+export const NEW_FEEDBACK = DB_URL + '/event/feedback';
+
 
 
 
