@@ -131,7 +131,7 @@ const ClubForm = props => {
         club['_id'] = id;
       }
       const response = await saveClub(club);
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log('Club Creation successfull');
         setMessage('Club Creation Successfull');
         setMessagePopupState(true);

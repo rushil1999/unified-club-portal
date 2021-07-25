@@ -7,9 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import { Button, CircularProgress } from '@material-ui/core';
 import { AuthContext } from '../auth/ProvideAuth';
-import { getUserFeedbackForEvent, sendUserFeedback } from '../../services/eventServices';
+import { getUserFeedbackForEvent, sendUserFeedback, validateFeedbackObject } from '../../services/eventServices';
 import MessageComponent from '../MessageComponent';
-
+import Typography from '@material-ui/core/Typography';
 
 const labels = {
   0.5: 'Useless',
@@ -29,7 +29,11 @@ const useStyles = makeStyles({
     // width: 200,
     display: 'flex',
     alignItems: 'center',
-    height: 500,
+    height: 400,
+    padding: '10px',
+    // boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset',
+    border: 'solid',
+    borderColor: '#424242'
   },
   addHeight: {
     height: 300
@@ -44,14 +48,19 @@ const useStyles = makeStyles({
   textFieldStyling: {
     width: '600px',
     margin: 'auto',
+  },
+  questionFieldStyling: {
+    margin: 'auto',
+    color: '#009688',
+  },
+  ratingWidth: {
+    width: '220px'
   }
 });
 
 const RatingComponent = props => {
   const contextValue = useContext(AuthContext);
-  const [value, setValue] = useState(2);
   const [hover, setHover] = useState(-1);
-  const [comments, setComments] = useState('');
   const [loading, setLoading] = useState(true);
   const classes = useStyles();
   const [message, setMessage] = useState('');
@@ -59,15 +68,21 @@ const RatingComponent = props => {
   const [isFeedbackGiven, setIsFeedbackGiven] = useState(false);
   const { eventId } = props;
   const { user } = contextValue;
+  const [feedbackState, setFeedbackState] = useState({
+    value: 2,
+    comments: ''
+  });
 
   useEffect(() => {
     const getUserFeedback = async () => {
       setLoading(true);
       const response = await getUserFeedbackForEvent(user['_id'], eventId);
-      if (response.status === 200) {
+      if (response.status === 200 && response.data.success === true) {
         const { stars, comments } = response.data.data;
-        setValue(stars);
-        setComments(comments);
+        setFeedbackState({
+          value: stars,
+          comments
+        });
         setIsFeedbackGiven(true);
         setLoading(false);
       }
@@ -75,6 +90,9 @@ const RatingComponent = props => {
         console.log(response.data.errors[0]);
         setMessagePopupState('Internal Server Error');
         setMessagePopupState(true);
+      }
+      else if (response.status === 200 && response.data.success === false) {
+        setLoading(false);
       }
     }
     getUserFeedback();
@@ -87,84 +105,112 @@ const RatingComponent = props => {
       stars: value,
       comments
     };
-    const response = await sendUserFeedback(feedback);
-    if (response.status === 200) {
-      setMessage('Feedback Submitted Successfully');
+    const errors = validateFeedbackObject(feedback);
+    if (errors.length === 0) {
+      const response = await sendUserFeedback(feedback);
+      if (response.status === 201) {
+        const { stars, comments } = response.data.data;
+        setMessage('Feedback Submitted Successfully');
+        setMessagePopupState(true);
+        setFeedbackState({
+          value: stars,
+          comments
+        });
+        setIsFeedbackGiven(true);
+      }
+      else if (response.status === 409) {
+        setMessage('Your Feedback Already Exists');
+        setMessagePopupState(true);
+      }
+      else if (response.status === 500) {
+        console.log(response.data.errors);
+        setMessage('Internal Server Error');
+        setMessagePopupState(true);
+      }
+    }
+    else{
+      console.log(errors);
+      setMessage(errors[0]);
       setMessagePopupState(true);
     }
-    else if (response.status === 409) {
-      setMessage('Your Feedback Already Exists');
-      setMessagePopupState(true);
-    }
-    else if (response.status === 500) {
-      console.log(response.data.errors);
-      setMessage('Internal Server Error');
-      setMessagePopupState(true);
-    }
+
   }
 
   const onCommentsFieldChange = event => {
-    setComments(event.target.value);
+    setFeedbackState({ ...feedbackState, comments: event.target.value });
   }
 
+  const { value, comments } = feedbackState;
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
         <>
-        {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
-        <Card>
-        <Grid container spacing={3}>
-          <div className={classes.ratingStyling}>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <Rating
-                  name="hover-feedback"
-                  value={value}
-                  precision={0.5}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  onChangeActive={(event, newHover) => {
-                    setHover(newHover);
-                  }}
-                  disabled={isFeedbackGiven}
-                />
+          {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState} />}
+          <Card className={classes.root}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <div className={classes.questionFieldStyling}>
+                  <Typography component="h4" variant="h4" key="name">
+                    {isFeedbackGiven ? 'Thank you for sharing your experience' : 'How was you Experience ? '}
+                  </Typography>
+                </div>
               </Grid>
-              <Grid item xs={6}>
-                {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
+              <div className={classes.ratingStyling}>
+                <Grid item container xs={12}>
+                  <Grid item xs={6}>
+                    <div className={classes.ratingWidth}>
+                      <Rating
+                        name="hover-feedback"
+                        value={value}
+                        precision={0.5}
+                        onChange={(event, newValue) => {
+                          setFeedbackState({ ...feedbackState, value: newValue });
+                        }}
+                        onChangeActive={(event, newHover) => {
+                          setHover(newHover);
+                        }}
+                        disabled={isFeedbackGiven}
+                      />
+                    </div>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography component="h6" variant="h6" key="name">
+                      {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
+                    </Typography>
+
+                  </Grid>
+                </Grid>
+              </div>
+
+              <Grid item xs={12}>
+                <div className={classes.textFieldStyling}>
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="Additional Comments"
+                    multiline
+                    rows={4}
+                    value={comments}
+                    variant="outlined"
+                    name="comments"
+                    onChange={onCommentsFieldChange}
+                    disabled={isFeedbackGiven}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} >
+                <div className={classes.buttonStyling}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={submitUserFeedback}
+                    disabled={isFeedbackGiven}
+                  >
+                    Submit Feedback
+                  </Button>
+                </div>
               </Grid>
             </Grid>
-            </div>
-
-          <Grid item xs={12}>
-            <div className={classes.textFieldStyling}>
-            <TextField
-              id="outlined-multiline-static"
-              label="Multiline"
-              multiline
-              rows={4}
-              value={comments}
-              variant="outlined"
-              name="comments"
-              onChange={onCommentsFieldChange}
-              disabled={isFeedbackGiven}
-            />
-            </div>
-          </Grid>
-          <Grid item xs={12} >
-            <div className={classes.buttonStyling}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={submitUserFeedback}
-              disabled={isFeedbackGiven}
-            >
-              Submit Feedback
-            </Button>
-            </div>
-          </Grid>
-        </Grid>
-        </Card>
+          </Card>
         </>
       )}
 

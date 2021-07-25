@@ -163,7 +163,6 @@ export const saveFeedback = async (req, res) => {
   const { userId, eventId, stars, comments } = req.body;
   try {
     const feedback = await Feedback.find({ userId, eventId });
-    console.log('Feedback', feedback);
     if (feedback.length === 0) {
       const newFeedback = new Feedback({ userId, eventId, stars, comments });
       await newFeedback.save();
@@ -197,8 +196,8 @@ export const getUserFeedbackForEvent = async (req, res) => {
       })
     }
     else {
-      return res.status(404).json({
-        errors: ['Entity Not Found']
+      return res.status(200).json({
+        success: false,
       })
     }
   }

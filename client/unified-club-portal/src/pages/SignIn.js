@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { SIGNIN_URL } from '../services/constants';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../components/auth/ProvideAuth';
+import MessageComponent from '../components/MessageComponent';
 
 function Copyright() {
   return (
@@ -56,6 +57,8 @@ export default function SignIn() {
     email: '',
     password: ''
   });
+  const [messagePopupState, setMessagePopupState] = useState(false);
+  const [message, setMessage ] = useState('');
 
   const formChangeHandler = event => {
     const fieldName = event.target.name;
@@ -76,7 +79,8 @@ export default function SignIn() {
     if(!response.ok){
       console.log('Response Status', response.status);
       console.log('Response Text', await response.text());
-      window.alert('Unable to log you in');
+      setMessage('Unable to log you in')
+      setMessagePopupState(true);
     }
     else{
       const resp = await response.json();
@@ -94,6 +98,8 @@ export default function SignIn() {
 
 
   return (
+    <React.Fragment>
+    {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -151,5 +157,6 @@ export default function SignIn() {
         <Copyright />
       </Box>
     </Container>
+    </React.Fragment>
   );
 }

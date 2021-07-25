@@ -56,7 +56,7 @@ export const enrollMemberInClub = async (req, res) => {
   const { userId, clubId } = req.body;
   try {
     const club = await Club.findById(clubId).exec();
-    const user = await User.findById(userId).exec(); //Just to check if user is present in DB
+    const user = await User.findById(userId).exec(); 
     if((club.member || []).length + 1 > club.memberCapacity){
       res.status(412).json({
         message: 'Limit Exceeded'
@@ -90,7 +90,7 @@ export const removeMemberFromClub = async (req, res) => {
   const { userId, clubId } = req.body;
   try {
     const club = await Club.findById(clubId).exec();
-    const user = await User.findById(userId).exec(); //Just to check if user is present in DB
+    const user = await User.findById(userId).exec();
     if (club.members.includes(userId)) {
       const index = club.members.indexOf(userId);
       if (index > -1) {
@@ -98,6 +98,14 @@ export const removeMemberFromClub = async (req, res) => {
         await club.save();
       }
     }
+    if (user.registeredClubs.includes(clubId)) {
+      const index = user.registeredClubs.indexOf(clubId);
+      if (index > -1) {
+        user.registeredClubs.splice(index, 1);
+        await user.save();
+      }
+    }
+
     res.status(200).json({ success: true, data: club });
 
 

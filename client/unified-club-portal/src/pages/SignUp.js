@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { SIGNUP_URL } from '../services/constants';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../components/auth/ProvideAuth';
+import MessageComponent from '../components/MessageComponent';
 
 function Copyright() {
   return (
@@ -61,6 +62,9 @@ export default function SignUp() {
     password: ''
   });
 
+  const [message, setMessage] = useState('');
+  const [messagePopupState, setMessagePopupState] = useState(false);
+
   const formChangeHandler = event => {
     const fieldName = event.target.name;
     const fieldValue = event.target.value;
@@ -95,6 +99,8 @@ export default function SignUp() {
   }
 
   return (
+    <React.Fragment>
+    {message && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -180,5 +186,6 @@ export default function SignUp() {
         <Copyright />
       </Box>
     </Container>
+    </React.Fragment>
   );
 }

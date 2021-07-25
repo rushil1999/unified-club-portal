@@ -177,11 +177,19 @@ export const getUserFeedbackForEvent = async(userId, eventId) => {
     },
   }
   const url = `${NEW_FEEDBACK}/${userId}/${eventId}`;
-  console.log(url);
   const response = await fetch(url, apiParams);
   const resp = await response.json();
   return {
     status: response.status,
     data: resp
   };
+}
+
+export const validateFeedbackObject = feedback => {
+  const { comments } = feedback;
+  const errors = [];
+  if(comments.length>200){
+    errors.push('Please keep comments under 200 words...');
+  }
+  return errors;
 }

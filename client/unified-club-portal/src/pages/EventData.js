@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import EventInfo from '../components/event/EventInfo';
 import UserList from '../components/user/UserList';
-import { fetchEventDetails, registerUser, getEventStatus, sendUserFeedback, getUserFeedbackForEvent } from '../services/eventServices';
+import { fetchEventDetails, registerUser, getEventStatus } from '../services/eventServices';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,6 @@ import { DB_URL } from '../services/constants';
 import RatingComponent from '../components/event/RatingComponent';
 import Card from '@material-ui/core/Card';
 import MessageComponent from '../components/MessageComponent';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -118,7 +117,6 @@ const EventData = props => {
     setRatingComponentState(!ratingComponentState);
   }
 
-
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
@@ -135,7 +133,7 @@ const EventData = props => {
           </Grid>
           <br></br>
           <Grid container item className={classes.registerButton} >
-            {(!eventState.participants.includes(user['_id']) || !user.role === 'admin') && (eventStatusState < 2) &&
+            {(!eventState.participants.includes(user['_id']) && !user.role === 'admin' && eventStatusState < 2) &&
               (<Grid item xs={6}>
                 <Button
                   variant="contained"
