@@ -40,7 +40,6 @@ const useStyles = makeStyles({
 const FeedbackCard = props => {
   const classes = useStyles();
   const { feedback } = props;
-  console.log(feedback);
   const { stars, comments } = feedback;
   return (
     <Grid item>

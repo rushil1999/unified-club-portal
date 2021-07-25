@@ -1,9 +1,16 @@
 import nodemailer from 'nodemailer';
+import Club from '../models/club';
 require('dotenv').config();
 
 
 export const sendEventRegisterationMail = async event => {
   const { name, from, to, venue, clubId } = event;
+  const startDate = new Date(from);
+  const startDateString = `${startDate.getDate()}/${startDate.getMonth()}/${startDate.getFullYear()}   ${startDate.getHours()}:${startDate.getMinutes()}`;
+
+  const toDate = new Date(to);
+  const toDateString = `${toDate.getDate()}/${toDate.getMonth()}/${toDate.getFullYear()}   ${toDate.getHours()}:${toDate.getMinutes()} `;
+
   try {
     const club = await Club.findById(clubId);
     if (club) {
@@ -13,8 +20,8 @@ export const sendEventRegisterationMail = async event => {
         to: 'shahrushil1999@gmail.com',
         subject: 'Do Not Reply',
         html: `<p><span style="color: #00ff00;">Congratulations!!</span></p>
-        <p>You have registered for the event:&nbsp;</p>
-        <p>Start Time: ${from}<br />End Time: ${to}<br />Venue: ${venue}<br />Organized By: {clubName}</p>
+        <p>You have registered for the event: ${name}</p>
+        <p>Start Time: ${startDateString}<br />End Time: ${toDateString}<br />Venue: ${venue}<br />Organized By: ${clubName}</p>
         <p><br />Kindly preserve this mail for future purposes.</p>
         <p>Regards: UCP Team</p>`
       };
