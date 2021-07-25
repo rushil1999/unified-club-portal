@@ -23,6 +23,9 @@ const clubSchema = mongoose.Schema({
   },
   members: [{
     type: mongoose.Types.ObjectId
+  }],
+  events: [{
+    type: mongoose.Types.ObjectId
   }]
 },{ timestamps: true });
 

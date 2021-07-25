@@ -2,16 +2,20 @@ import express from 'express';
 import mongoose from 'mongoose';
 import clubRouter from './routes/clubRoutes';
 import authRouter from './routes/authRoutes';
+import userRouter from './routes/userRoutes';
+import eventRouter from './routes/eventRoutes';
+import resourceRouter from './routes/resourceRoutes';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-
+import cors from 'cors';
+import path from 'path';
+import multer from 'multer';
 const result = dotenv.config()
 
 if (result.error) {
   throw result.error
 }
 
-// console.log(result.parsed);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +24,9 @@ const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
+
+//For CORS
+app.use(cors());
 
 //using boody-parser to parse incoming request bodies
 app.use(bodyParser.json());
@@ -39,9 +46,16 @@ mongoose.connect(CONNECTION_URL, connectionParams)
 
 mongoose.set('useFindAndModify', false);
 
+app.use('/public/uploads',  express.static(__dirname + '/public/uploads'));
+
 //setting primary routes
 app.use('/clubs', clubRouter);
 app.use('/club', clubRouter);
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
+app.use('/event', eventRouter);
+app.use('/events', eventRouter);
+app.use('/resource', resourceRouter);
+
 
 
