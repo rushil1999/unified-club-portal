@@ -197,7 +197,7 @@ const ClubData = props => {
 
             <Grid container item className={classes.root} spacing={3}>
               <Grid item xs={6}>
-                <UserList ids={clubState.members} />
+                <UserList ids={clubState.members} titleText="Registered Members" emptyText="Enroll Now!" />
               </Grid>
               <Grid item xs={6}>
                 <EventList xs={12} ids={clubState.events} club={clubState} />
