@@ -98,7 +98,7 @@ const ClubForm = props => {
     }
     else {
       setLoading(false);
-    }
+    } // eslint-disable-next-line
   }, []);
 
 

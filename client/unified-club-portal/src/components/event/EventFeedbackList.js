@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles, createStyles } from '@material-ui/core/styles';
-import EventCard from './EventCard';
-import { useHistory } from 'react-router-dom';
-import { fetchEventList } from "../../services/eventServices";
-import { Button, CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@material-ui/core';
 import MessageComponent from "../MessageComponent";
 import { getFeedbacksForEvent } from '../../services/eventServices';
 import FeedbackCard from './FeedbackCard';
-import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +44,7 @@ const EventFeedbackList = props => {
         setLoading(false);
       }
     } 
-    getFeedbacks();
+    getFeedbacks(); // eslint-disable-next-line
   },[])
 
   return(

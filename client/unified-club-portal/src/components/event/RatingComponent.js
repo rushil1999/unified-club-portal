@@ -83,7 +83,7 @@ const RatingComponent = props => {
         setLoading(false);
       }
     }
-    getUserFeedback();
+    getUserFeedback(); // eslint-disable-next-line
   }, [])
 
   const submitUserFeedback = async () => {

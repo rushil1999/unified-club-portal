@@ -127,6 +127,7 @@ const EventForm = props => {
     else{
       setLoading(false);
     }
+    // eslint-disable-next-line
   }, [])
 
 
