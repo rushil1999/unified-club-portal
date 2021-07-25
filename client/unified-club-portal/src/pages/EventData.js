@@ -250,7 +250,7 @@ const EventData = props => {
             justifyContent="start"
           >
             <Grid item xs={12}>
-              <UserList ids={eventState.participants} />
+              <UserList ids={eventState.participants} titleText="Participants" emptyText="Register Now!" />
             </Grid>
           </Grid>
 

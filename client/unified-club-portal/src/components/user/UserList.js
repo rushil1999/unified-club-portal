@@ -67,7 +67,7 @@ const UserList = props => {
       {loading ? <CircularProgress /> : (
         <Card className ={classes.listItem}>
           <CardHeader
-            title='Members / Participants'
+            title={props.titleText}
           />
           {userList.length > 0 ? (
             <List>
@@ -89,7 +89,7 @@ const UserList = props => {
           ): (
             <div className={classes.questionFieldStyling}>
                 <Typography component="h5" variant="h6" key="name">
-                  No Registered Members
+                  {props.emptyText}
                 </Typography>
               </div>
           )}
