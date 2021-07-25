@@ -4,6 +4,7 @@ import Club from '../models/club';
 import User from '../models/user';
 import Resource from '../models/resource';
 import Feedback from '../models/feedback';
+import { sendEventRegisterationMail } from '../services/emailService';
 
 export const saveEvent = async (req, res) => {
   let event;
@@ -137,6 +138,7 @@ export const registerUserToEvent = async (req, res) => {
           user.registeredEvents.push(event.id);
           await event.save();
           await user.save();
+          const res = sendEventRegisterationMail(event);
           res.status(200).json({
             success: true,
             data: event

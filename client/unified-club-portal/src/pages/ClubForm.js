@@ -78,7 +78,7 @@ const ClubForm = props => {
     const getClubDetails = async () => {
       setLoading(true);
       const response = await fetchClubDetails(id);
-      if (response.status === 201) {
+      if (response.status === 200) {
         setClubState(response.data.data);
         setLoading(false);
       }
