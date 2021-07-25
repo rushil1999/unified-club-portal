@@ -61,7 +61,7 @@ export default function SignUp() {
     contact: '',
     password: ''
   });
-
+// eslint-disable-next-line
   const [message, setMessage] = useState('');
   const [messagePopupState, setMessagePopupState] = useState(false);
 

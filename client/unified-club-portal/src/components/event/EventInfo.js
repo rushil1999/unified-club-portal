@@ -1,19 +1,18 @@
-import React from 'react';
-import CardContent from '@material-ui/core/CardContent';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-
-
+import React from "react";
+import CardContent from "@material-ui/core/CardContent";
+import Card from "@material-ui/core/Card";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    textAlign: 'center',
+    textAlign: "center",
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
   },
   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -32,9 +31,7 @@ const EventInfo = props => {
   const startDateString = `${startDate.getDate()}/${startDate.getMonth()}/${startDate.getFullYear()}   ${startDate.getHours()}:${startDate.getMinutes()}`;
 
   const toDate = new Date(to);
-  const toDateString = `${toDate.getDate()}/${toDate.getMonth()}/${toDate.getFullYear()}   ${toDate.getHours()}:${toDate.getMinutes()} `
-
-
+  const toDateString = `${toDate.getDate()}/${toDate.getMonth()}/${toDate.getFullYear()}   ${toDate.getHours()}:${toDate.getMinutes()} `;
 
   return (
     <React.Fragment>
@@ -43,19 +40,37 @@ const EventInfo = props => {
           <Typography variant="h4" color="primary" key="name">
             {name}
           </Typography>
-          <Typography variant="h5" color="secondary" key="desc" className={classes.pos}>
+          <Typography
+            variant="h5"
+            color="secondary"
+            key="desc"
+            className={classes.pos}
+          >
             {desc}
           </Typography>
-          <Typography variant="h6" color="textPrimary" key="memberCapacity">
+          <Typography
+            variant="h6"
+            style={{ color: "darkslategrey" }}
+            key="memberCapacity"
+          >
             Capacity : {capacity}
           </Typography>
-          <Typography variant="subtitle1" color="textPrimary">
-            {startDateString} ------- {toDateString}
+          <Typography variant="h6" style={{ color: "darkslategrey" }}>
+            <i>
+              <b>{startDateString}</b>
+            </i>{" "}
+            to{" "}
+            <i>
+              <b>{toDateString}</b>
+            </i>
+          </Typography>
+          <Typography variant="h6" style={{ color: "darkslategrey" }}>
+            {status}
           </Typography>
         </CardContent>
       </Card>
     </React.Fragment>
   );
-}
+};
 
 export default EventInfo;

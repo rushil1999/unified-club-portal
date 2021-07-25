@@ -7,7 +7,6 @@ import { fetchEventList } from "../../services/eventServices";
 import { Button, CircularProgress } from '@material-ui/core';
 import MessageComponent from "../MessageComponent";
 
-
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {

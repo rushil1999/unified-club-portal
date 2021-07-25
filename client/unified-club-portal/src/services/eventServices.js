@@ -137,12 +137,15 @@ export const getEventStatus = (startDate, endDate) => {
   if (currentTime + 7200000 >= startTime && currentTime + 7200000 < endTime) {
     return 0;
   }
+  // UPCOMING EVENT
   else if (currentTime + 7200000 < startTime) {
     return -1;
   }
+  // ENDED EVENT
   else if (currentTime > endTime) {
     return 2;
   }
+  // IN PROGRESS
   else if (currentTime > startTime && currentTime < endTime) {
     return 1;
   }
