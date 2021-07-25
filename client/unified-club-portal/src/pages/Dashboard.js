@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PersonIcon from '@material-ui/icons/Person';
-import { mainListItems, secondaryListItems } from '../services/listItems';
+import { MainListItems, secondaryListItems } from '../services/listItems';
 import { AuthContext } from '../components/auth/ProvideAuth';
 import { useHistory } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
@@ -171,7 +171,7 @@ export default function Dashboard(props) {
                 </IconButton>
               </div>
               <Divider />
-              <List>{mainListItems}</List>
+              <List>{<MainListItems/>}</List>
               <Divider />
               <List>{secondaryListItems}</List>
             </Drawer>

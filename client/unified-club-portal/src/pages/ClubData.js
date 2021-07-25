@@ -50,7 +50,7 @@ const ClubData = props => {
       else if (response.message) {
         window.alert(response.message);
       }
-      else if(response.status === 500){
+      else if (response.status === 500) {
         console.log(response.data.errors);
         setMessage('Internal Server Error');
         setMessagePopupState(true);
@@ -67,13 +67,13 @@ const ClubData = props => {
       setClubState(response.data.data);
       setMessage('Enrolled Successfully');
       setMessagePopupState(true);
-    } 
-    else if(response.status === 500){
+    }
+    else if (response.status === 500) {
       console.log(response.data.errors)
       setMessage('Inernal Server Error');
       setMessagePopupState(true);
     }
-    else if(response.status === 412){
+    else if (response.status === 412) {
       console.log(response.data.message)
       setMessage(response.data.message);
       setMessagePopupState(true);
@@ -88,8 +88,8 @@ const ClubData = props => {
       setClubState(response.data.data);
       setMessage('You have left the club');
       setMessagePopupState(true);
-    } 
-    else if(response.status === 500){
+    }
+    else if (response.status === 500) {
       console.log(response.data.errors)
       setMessage('Inernal Server Error');
       setMessagePopupState(true);
@@ -108,7 +108,7 @@ const ClubData = props => {
 
   return (
     <React.Fragment>
-      {messagePopupState && <MessageComponent open={message} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
+      {messagePopupState && <MessageComponent open={message} messageContent={message} setMessagePopupState={setMessagePopupState} />}
       {loading ? <CircularProgress /> : (
         <>
           <Grid container className={classes.root} spacing={2}>
@@ -120,15 +120,18 @@ const ClubData = props => {
               </Grid>
             </Grid>
             <Grid container item className={classes.root} xs={12} spacing={3}>
-              <Grid item xs={4} >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={isUserAlreadyEnrolled ? (leaveClubHandler) : (enrollHandler)}
-                >
-                  {isUserAlreadyEnrolled ? 'Leave' : 'Enroll'}
-                </Button>
-              </Grid>
+              {user.role === 'participant' && (
+                <Grid item xs={4} >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={isUserAlreadyEnrolled ? (leaveClubHandler) : (enrollHandler)}
+                  >
+                    {isUserAlreadyEnrolled ? 'Leave' : 'Enroll'}
+                  </Button>
+                </Grid>
+              )}
+
               {user.role === 'admin' && (<Grid item xs={4} >
                 <Button
                   variant="contained"
@@ -139,22 +142,23 @@ const ClubData = props => {
                 </Button>
               </Grid>)}
               {user.role === 'admin' && (
-              <Grid item xs={4}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={redirectToUpdateClubForm}
-                >
-                  Edit Club
-                </Button>
-              </Grid>)}
+                <Grid item xs={4}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={redirectToUpdateClubForm}
+                  >
+                    Edit Club
+                  </Button>
+                </Grid>)}
             </Grid>
+
             <Grid container item className={classes.root} spacing={2}>
               <Grid item xs={6} >
                 <UserList ids={clubState.members} />
               </Grid>
               <Grid item xs={6}>
-                <EventList xs={12} ids={clubState.events} club={clubState}/>
+                <EventList xs={12} ids={clubState.events} club={clubState} />
               </Grid>
             </Grid>
           </Grid>

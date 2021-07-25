@@ -10,6 +10,8 @@ import { red } from '@material-ui/core/colors';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import { CircularProgress } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +34,11 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     padding: '10px',
     boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset'
-  }
+  },
+  questionFieldStyling: {
+    margin: 'auto',
+    color: '#009688',
+  },
 }));
 
 
@@ -63,8 +69,8 @@ const UserList = props => {
           <CardHeader
             title='Members / Participants'
           />
-          
-          <List>
+          {userList.length > 0 ? (
+            <List>
             {userList.map(user => {
               return (
                   <ListItem className={classes.root} alignItems="flex-start" key={user['_id']}>
@@ -80,6 +86,14 @@ const UserList = props => {
                 );
             })}
           </List>
+          ): (
+            <div className={classes.questionFieldStyling}>
+                <Typography component="h5" variant="h6" key="name">
+                  No Registered Members
+                </Typography>
+              </div>
+          )}
+          
         </Card>)}
     </React.Fragment>
   );

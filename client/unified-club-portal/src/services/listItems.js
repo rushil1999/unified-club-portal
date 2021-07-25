@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,22 +9,38 @@ import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../components/auth/ProvideAuth';
 
-export const mainListItems = (
-  <div>
-    <ListItem button component={Link} to={"/clubs"}>
-      <ListItemIcon>
-        <GroupSharpIcon />
-      </ListItemIcon>
-      <ListItemText primary="Clubs" />
-    </ListItem>
-    <ListItem button component={Link} to={"/club/form/new"}>
-      <ListItemIcon>
-        <AddCircleOutlinedIcon />
-      </ListItemIcon>
-      <ListItemText primary="New Club" />
-    </ListItem>
-    <ListItem button>
+
+export const MainListItems = props => {
+  const context = useContext(AuthContext);
+  const { user } = context;
+
+  return (
+    <div>
+      <ListItem button component={Link} to={"/clubs"}>
+        <ListItemIcon>
+          <GroupSharpIcon />
+        </ListItemIcon>
+        <ListItemText primary="Clubs" />
+      </ListItem>
+      {user.role === 'admin' && (
+      <ListItem button component={Link} to={"/club/form/new"}>
+        <ListItemIcon>
+          <AddCircleOutlinedIcon />
+        </ListItemIcon>
+        <ListItemText primary="New Club" />
+      </ListItem>)}
+      {user.role === 'participant' && (
+        <ListItem button component={Link} to={"/user/events"}>
+          <ListItemIcon>
+            <AssignmentIcon />
+          </ListItemIcon>
+          <ListItemText primary="My Events" />
+        </ListItem>
+      )}
+
+      {/* <ListItem button>
       <ListItemIcon>
         <AccountCircleOutlinedIcon />
       </ListItemIcon>
@@ -35,24 +51,25 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="News" />
-    </ListItem>
-  </div>
-);
+    </ListItem> */}
+    </div>
+  )
+};
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Saved Items</ListSubheader>
-    <ListItem button component={Link} to={"/users/clubs"}>
+    {/* <ListSubheader inset>Saved Items</ListSubheader> */}
+    {/* <ListItem button component={Link} to={"/users/clubs"}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="My Clubs" />
-    </ListItem>
-    <ListItem button component={Link} to={"/user/events"}>
+    </ListItem> */}
+    {/* <ListItem button component={Link} to={"/user/events"}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="My Events" />
-    </ListItem>
+    </ListItem> */}
   </div>
 );

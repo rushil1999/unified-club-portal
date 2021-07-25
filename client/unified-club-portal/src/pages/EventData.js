@@ -74,7 +74,7 @@ const EventData = props => {
       setMessage(response.data.message);
       setMessagePopupState(true);
     }
-    else if(response.status === 500){
+    else if (response.status === 500) {
       console.log(response.data.errors);
       setMessage('Internal Server Error');
       setMessagePopupState(true);
@@ -94,7 +94,7 @@ const EventData = props => {
           const { path } = resourceResponse.data.data;
           setImagePath(path);
         }
-        else if(resourceResponse.status === 500){
+        else if (resourceResponse.status === 500) {
           console.log(resourceResponse.data.errors);
           setMessage('Could not fetch File');
           setMessagePopupState(true);
@@ -126,9 +126,9 @@ const EventData = props => {
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
-        
+
         <div >
-          {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState}/>}
+          {messagePopupState && <MessageComponent open={messagePopupState} messageContent={message} setMessagePopupState={setMessagePopupState} />}
           {imagePath && (<><img className={classes.image} src={`${DB_URL}/${imagePath}`} alt="event" />
             <br></br>
             <br></br></>)}
@@ -139,7 +139,7 @@ const EventData = props => {
           </Grid>
           <br></br>
           <Grid container item className={classes.registerButton} >
-            {(!eventState.participants.includes(user['_id']) && !user.role === 'admin' && eventStatusState < 2) &&
+            {(!eventState.participants.includes(user['_id']) && user.role === 'participant' && eventStatusState < 2) &&
               (<Grid item xs={6}>
                 <Button
                   variant="contained"
@@ -180,14 +180,14 @@ const EventData = props => {
           </Grid>
           {ratingComponentState && (
             <>
-            <br></br>
-            <Card>
-            <Grid item container>
-              <Grid item xs={12}>
-                <RatingComponent eventId={eventState['_id']}/>
-              </Grid>
-            </Grid>
-            </Card>
+              <br></br>
+              <Card>
+                <Grid item container>
+                  <Grid item xs={12}>
+                    <RatingComponent eventId={eventState['_id']} />
+                  </Grid>
+                </Grid>
+              </Card>
             </>
           )}
           <br></br>
@@ -196,16 +196,17 @@ const EventData = props => {
               <UserList ids={eventState.participants} />
             </Grid>
           </Grid>
+
           {feedbackComponentState && (
             <>
-            <br></br>
-            <Card>
-            <Grid item container>
-              <Grid item xs={12}>
-                <EventFeedbackList eventId={eventState['_id']}/>
-              </Grid>
-            </Grid>
-            </Card>
+              <br></br>
+              <Card>
+                <Grid item container>
+                  <Grid item xs={12}>
+                    <EventFeedbackList eventId={eventState['_id']} />
+                  </Grid>
+                </Grid>
+              </Card>
             </>
           )}
         </div>

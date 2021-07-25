@@ -11,6 +11,8 @@ import { Button, CircularProgress } from '@material-ui/core';
 import EventCard from './EventCard';
 import { useHistory } from 'react-router';
 import MessageComponent from '../MessageComponent';
+import Typography from '@material-ui/core/Typography';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+  },
+  questionFieldStyling: {
+    margin: 'auto',
+    color: '#009688',
   },
 }));
 
@@ -68,19 +74,28 @@ const EventList = props => {
             <CardHeader
               title='Events'
             />
-            <List className={classes.root}>
-              {eventList.map(event => {
-                return (
+            {eventList.length > 0 ? (
+              <List className={classes.root}>
+                {eventList.map(event => {
+                  return (
 
-                  <ListItem alignItems="flex-start" key={event['_id']}>
-                    <Button
-                      onClick={() => { redirectToEventData(event['_id']) }}
-                    >
-                      <EventCard event={event} />
-                    </Button>
-                  </ListItem>);
-              })}
-            </List>
+                    <ListItem alignItems="flex-start" key={event['_id']}>
+                      <Button
+                        onClick={() => { redirectToEventData(event['_id']) }}
+                      >
+                        <EventCard event={event} />
+                      </Button>
+                    </ListItem>);
+                })}
+              </List>
+            ) : (
+              <div className={classes.questionFieldStyling}>
+                <Typography component="h4" variant="h4" key="name">
+                  No Events
+                </Typography>
+              </div>
+            )}
+
           </Card>
         </div>)}
     </React.Fragment>
