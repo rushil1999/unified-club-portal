@@ -185,6 +185,24 @@ export const getUserFeedbackForEvent = async(userId, eventId) => {
   };
 }
 
+export const getFeedbacksForEvent = async eventId => {
+  const token = getToken();
+  const apiParams = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': `${token}`
+    }
+  }
+  const url = `${NEW_FEEDBACK}/${eventId}`;
+  const response = await fetch(url, apiParams);
+  const resp = await response.json();
+  return {
+    status: response.status,
+    data: resp
+  }
+}
+
 export const validateFeedbackObject = feedback => {
   const { comments } = feedback;
   const errors = [];

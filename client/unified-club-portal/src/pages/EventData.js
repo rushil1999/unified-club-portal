@@ -14,6 +14,7 @@ import { DB_URL } from '../services/constants';
 import RatingComponent from '../components/event/RatingComponent';
 import Card from '@material-ui/core/Card';
 import MessageComponent from '../components/MessageComponent';
+import EventFeedbackList from '../components/event/EventFeedbackList';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +53,7 @@ const EventData = props => {
   const [imagePath, setImagePath] = useState();
   const [eventStatusState, setEventStatusState] = useState();
   const [ratingComponentState, setRatingComponentState] = useState(false);
+  const [feedbackComponentState, setFeedbackComponentState] = useState(false);
   const [messagePopupState, setMessagePopupState] = useState(false);
   const [message, setMessage] = useState('');
   const { user } = contextValue;
@@ -117,6 +119,10 @@ const EventData = props => {
     setRatingComponentState(!ratingComponentState);
   }
 
+  const toggleFeedbackComponentState = () => {
+    setFeedbackComponentState(!feedbackComponentState);
+  }
+
   return (
     <React.Fragment>
       {loading ? <CircularProgress /> : (
@@ -162,6 +168,15 @@ const EventData = props => {
                 Rate Event
               </Button>
             </Grid>)}
+            {(user.role === 'admin' && eventStatusState === 2) && (<Grid item xs={6}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={toggleFeedbackComponentState}
+              >
+                View Feedbacks
+              </Button>
+            </Grid>)}
           </Grid>
           {ratingComponentState && (
             <>
@@ -176,14 +191,23 @@ const EventData = props => {
             </>
           )}
           <br></br>
-          {<Grid container item>
-
-          </Grid>}
           <Grid container item className={classes.memberSection} justifyContent="center">
             <Grid item xs={12} >
               <UserList ids={eventState.participants} />
             </Grid>
           </Grid>
+          {feedbackComponentState && (
+            <>
+            <br></br>
+            <Card>
+            <Grid item container>
+              <Grid item xs={12}>
+                <EventFeedbackList eventId={eventState['_id']}/>
+              </Grid>
+            </Grid>
+            </Card>
+            </>
+          )}
         </div>
       )}
     </React.Fragment>
