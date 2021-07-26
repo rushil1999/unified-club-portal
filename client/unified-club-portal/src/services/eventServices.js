@@ -122,8 +122,13 @@ export const validateEventObject = event => {
   else {
     const toTimeStamp = new Date(to).getTime();
     const fromTimeStamp = new Date(from).getTime();
+    const currentTime = new Date().getTime();
+
     if (toTimeStamp < fromTimeStamp) {
-      errors.push('Date must be after start date');
+      errors.push('End Date must be after Start Date');
+    }
+    if(currentTime + 8640000000 > fromTimeStamp){
+      errors.push('Start Date must be 1 day post the current time');
     }
   }
   return errors;
