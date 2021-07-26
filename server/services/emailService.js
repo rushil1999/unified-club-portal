@@ -3,7 +3,7 @@ import Club from '../models/club';
 require('dotenv').config();
 
 
-export const sendEventRegisterationMail = async event => {
+export const sendEventRegisterationMail = async (event, user) => {
   const { name, from, to, venue, clubId } = event;
   const startDate = new Date(from);
   const startDateString = `${startDate.getDate()}/${startDate.getMonth()}/${startDate.getFullYear()}   ${startDate.getHours()}:${startDate.getMinutes()}`;
@@ -15,9 +15,10 @@ export const sendEventRegisterationMail = async event => {
     const club = await Club.findById(clubId);
     if (club) {
       const { name: clubName } = club;
+      const {email} = user;
       const mailOptions = {
         from: 'rushil.s@ahduni.edu.in',
-        to: 'shahrushil1999@gmail.com',
+        to: `${email}`,
         subject: 'Do Not Reply',
         html: `<p><span style="color: #00ff00;">Congratulations!!</span></p>
         <p>You have registered for the event: ${name}</p>

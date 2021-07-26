@@ -138,7 +138,7 @@ export const registerUserToEvent = async (req, res) => {
           user.registeredEvents.push(event.id);
           await event.save();
           await user.save();
-          const emailReponse = sendEventRegisterationMail(event);
+          const emailReponse = sendEventRegisterationMail(event, user);
           res.status(200).json({
             success: true,
             data: event
