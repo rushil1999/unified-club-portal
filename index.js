@@ -10,10 +10,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import multer from 'multer';
-const result = dotenv.config()
+const envConfig = dotenv.config({silent: true})
 
-if (result.error) {
-  throw result.error
+if (envConfig.error) {
+  throw envConfig.error;
 }
 
 
