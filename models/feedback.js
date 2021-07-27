@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { getUserFeedbackForEvent } from '../../client/unified-club-portal/src/services/eventServices';
+import { getUserFeedbackForEvent } from '../client/src/services/eventServices';
 
 const feedbackSchema = mongoose.Schema({
   userId: {
