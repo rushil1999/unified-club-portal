@@ -18,7 +18,7 @@ if (result.error) {
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const CONNECTION_URL = process.env.MONGODB_URI;
 const connectionParams = {
   useNewUrlParser: true,
