@@ -10,7 +10,7 @@ const UserEvents = props => {
     <React.Fragment>
       {registeredEvents.length>0 ?
         (<EventGrid  ids={registeredEvents}/>) : 
-        (<h3>No Events</h3>)
+        (<h4>You have no registered events!</h4>)
       }
          
     </React.Fragment>

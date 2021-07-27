@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   questionFieldStyling: {
-    margin: 'auto',
+    margin: '0 0 20px 0',
     color: '#009688',
   },
 }));
@@ -89,8 +89,8 @@ const EventList = props => {
               </List>
             ) : (
               <div className={classes.questionFieldStyling}>
-                <Typography component="h4" variant="h4" key="name">
-                  No Events
+                <Typography component="h5" variant="h5" key="name">
+                  Coming soon!
                 </Typography>
               </div>
             )}

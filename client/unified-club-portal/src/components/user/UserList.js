@@ -32,11 +32,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   listItem: {
-    padding: '10px',
     boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset'
   },
   questionFieldStyling: {
-    margin: 'auto',
+    margin: '0 0 20px 0',
     color: '#009688',
   },
 }));
@@ -88,7 +87,7 @@ const UserList = props => {
           </List>
           ): (
             <div className={classes.questionFieldStyling}>
-                <Typography component="h5" variant="h6" key="name">
+                <Typography component="h5" variant="h5" key="name">
                   {props.emptyText}
                 </Typography>
               </div>
