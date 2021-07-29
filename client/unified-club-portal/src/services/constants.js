@@ -5,6 +5,7 @@ export const VERIFY_TOKEN = DB_URL + '/auth/verifyToken';
 
 
 export const CLUB_LIST_URL = DB_URL + '/clubs';
+export const CLUB_LIST_FOR_USER_URL = CLUB_LIST_URL + '/user';
 export const NEW_CLUB_URL = DB_URL + '/club';
 export const CLUB_ENROLL_URL = DB_URL + '/club/enroll';
 export const CLUB_LEAVE_URL = DB_URL + '/club/leave';

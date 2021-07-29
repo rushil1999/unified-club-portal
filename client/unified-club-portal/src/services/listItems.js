@@ -15,7 +15,7 @@ export const MainListItems = props => {
 
   return (
     <div>
-      <ListItem button component={Link} to={"/clubs"}>
+      <ListItem button component={Link} to={"/clubs/all"}>
         <ListItemIcon>
           <GroupSharpIcon />
         </ListItemIcon>
@@ -34,6 +34,14 @@ export const MainListItems = props => {
             <AssignmentIcon />
           </ListItemIcon>
           <ListItemText primary="My Events" />
+        </ListItem>
+      )}
+      {user.role === 'participant' && (
+        <ListItem button component={Link} to={"/clubs/user"}>
+          <ListItemIcon>
+            <AssignmentIcon />
+          </ListItemIcon>
+          <ListItemText primary="My Clubs" />
         </ListItem>
       )}
 

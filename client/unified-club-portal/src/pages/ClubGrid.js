@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { fetchClubList } from "../services/clubServices";
+import { fetchClubList, fetchClubListForUser } from "../services/clubServices";
 import ClubCard from '../components/club/ClubCard';
 import MessageComponent from "../components/MessageComponent";
+import { useParams } from "react-router";
+import { AuthContext } from "../components/auth/ProvideAuth";
+
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -28,13 +31,21 @@ export default function ClubGrid() {
   const [messagePopupState, setMessagePopupState] = useState(false);
   const [message, setMessage] = useState('');
 
-
+  const {info} = useParams();
   const styles = useStyles();
+  const contextValue = useContext(AuthContext);
+  const {user} = contextValue;
 
 
   useEffect(() => {
-    async function getClublist() {
-      const response = await fetchClubList();
+    async function getClublist(info) {
+      let response;
+      if(info === 'all'){
+        response = await fetchClubList();
+      }
+      else{
+        response = await fetchClubListForUser(user.registeredClubs);
+      }
       if (response.status === 200) {
         setClubList(response.data.data);
         setLoading(false);
@@ -46,8 +57,13 @@ export default function ClubGrid() {
         setLoading(false);
       }
     }
-    getClublist();
-  }, []);
+    if(info === 'all'){
+      getClublist('all');
+    }
+    else{
+      getClublist('');
+    }
+  }, [info, user]);
 
   return (
     <div>

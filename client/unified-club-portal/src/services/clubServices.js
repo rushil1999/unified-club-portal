@@ -1,5 +1,5 @@
 import { getToken } from "./authServices";
-import { CLUB_LIST_URL, NEW_CLUB_URL, CLUB_ENROLL_URL, CLUB_LEAVE_URL } from "./constants"
+import { CLUB_LIST_URL, NEW_CLUB_URL, CLUB_ENROLL_URL, CLUB_LEAVE_URL, CLUB_LIST_FOR_USER_URL } from "./constants"
 import { isEmpty, isBlank } from "./validationFunctions";
 
 export const fetchClubList = async () => {
@@ -13,6 +13,26 @@ export const fetchClubList = async () => {
     },
   }
   const response = await fetch(CLUB_LIST_URL, apiParams);
+  const resp = await response.json();
+  return {
+    status: response.status,
+    data: resp
+  }
+}
+
+export const fetchClubListForUser = async ids => {
+
+  const token = getToken();
+  const apiParams = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'authorization': `${token}`
+    },
+    body: JSON.stringify({ ids }),
+  }
+  console.log(ids);
+  const response = await fetch(CLUB_LIST_FOR_USER_URL, apiParams);
   const resp = await response.json();
   return {
     status: response.status,

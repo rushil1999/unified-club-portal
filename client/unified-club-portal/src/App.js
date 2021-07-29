@@ -30,7 +30,7 @@ function App() {
               component={SignIn}>
             </Route>
             <PrivateRoute
-              path='/clubs'
+              path='/clubs/:info'
               exact
               component={() => {
                 return (

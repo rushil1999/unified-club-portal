@@ -7,10 +7,36 @@ export const getClubList = async (req, res) => {
     const clubs = await Club.find({});
     res.status(200).json({ success: true, data: clubs });
   }
-  catch {
-    res.status(500).send();
+  catch(err) {
+    res.status(500).json({
+      errors: [err.message]
+    });
   }
 };
+
+export const getClubListByIds = async (req, res) => {
+  const { ids } = req.body;
+  try{
+    const clubs =  ids.map(async id => {
+      const club = await Club.findById(id);
+      if(club){
+        return club;
+      }
+    });
+    const clubList = await Promise.all(clubs);
+    console.log(clubList);
+    res.status(200).json({
+      success: true,
+      data: clubList
+    })
+  }
+  catch(err){
+    console.log('Catch', err.message);
+    res.status(500).json({
+      errors: [err.message]
+    })
+  }
+}
 
 export const getClubInfo = async (req, res) => {
   try {
@@ -74,9 +100,6 @@ export const enrollMemberInClub = async (req, res) => {
         res.status(200).json({ success: true, data: club });
       }
     }
-    
-
-
   }
   catch (err) {
     console.log('Catch', err.message);
@@ -105,10 +128,7 @@ export const removeMemberFromClub = async (req, res) => {
         await user.save();
       }
     }
-
     res.status(200).json({ success: true, data: club });
-
-
   }
   catch (err) {
     console.log('Catch', err.message);
