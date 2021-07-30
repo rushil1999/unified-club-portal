@@ -109,7 +109,7 @@ export default function Dashboard(props) {
   const { setAuthState, setUser, user, loading } = contextValue;
   const { component: Component } = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
