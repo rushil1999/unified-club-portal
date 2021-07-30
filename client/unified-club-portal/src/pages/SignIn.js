@@ -98,7 +98,7 @@ export default function SignIn() {
       setAuthState(true);
       setUser(resp.user);
       setTimeout(()=>{
-        history.push('/clubs');
+        history.push('/clubs/all');
       }, 500);
     }
   } 
@@ -151,12 +151,18 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <Grid container>
+          <Grid container   justifyContent="center"
+              spacing={5}>
             <Grid item>
               <Link to={'/signup'} variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account? Sign Up
               </Link>
-            </Grid>
+              </Grid>
+              <Grid item>
+                <Link to={"/"} color="secondary">
+                  Go Back
+                </Link>
+              </Grid>
           </Grid>
         </form>
       </div>
