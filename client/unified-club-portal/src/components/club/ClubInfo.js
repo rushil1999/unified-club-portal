@@ -48,10 +48,10 @@ const ClubInfo = props => {
             style={{ color: "darkslategrey" }}
             key="memberCapacity"
           >
-            Capacity : {club.memberCapacity}
+            Capacity : <b>{club.memberCapacity}</b>
           </Typography>
           <Typography variant="h6" style={{ color: "darkslategrey" }}>
-            <i>Enrolled</i> <b>{club.members.length}</b>
+            Enrolled : <b>{club.members.length}</b>
           </Typography>
         </CardContent>
       </Card>

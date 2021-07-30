@@ -152,7 +152,7 @@ const ClubForm = props => {
   }
   const redirectToDashboard = () => {
     setTimeout(() => {
-      history.push('/clubs');
+      history.push('/clubs/all');
     }, 500);
   }
 
@@ -259,7 +259,7 @@ const ClubForm = props => {
                   variant="contained"
                   color="primary"
                   onClick={formSubmitHandler}>
-                  Create
+                  Submit
                 </Button>
               </Grid>
             </CardActions>

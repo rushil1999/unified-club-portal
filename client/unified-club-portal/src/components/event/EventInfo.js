@@ -69,7 +69,7 @@ const EventInfo = props => {
             style={{ color: "darkslategrey" }}
             key="memberCapacity"
           >
-            Capacity : {capacity}
+            Capacity : <b>{capacity}</b>
           </Typography>
           <Typography variant="h6" style={{ color: "darkslategrey" }}>
             <i>

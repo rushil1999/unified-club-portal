@@ -71,7 +71,7 @@ export default function FeaturedPost(props) {
             <Typography variant="subtitle1" paragraph>
               {desc}
               <br />
-              Capacity: {capacity}
+              Capacity: <b>{capacity}</b>
             </Typography>
             <Chip
               color="secondary"
