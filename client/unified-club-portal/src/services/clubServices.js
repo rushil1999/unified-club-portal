@@ -31,7 +31,6 @@ export const fetchClubListForUser = async ids => {
     },
     body: JSON.stringify({ ids }),
   }
-  console.log(ids);
   const response = await fetch(CLUB_LIST_FOR_USER_URL, apiParams);
   const resp = await response.json();
   return {

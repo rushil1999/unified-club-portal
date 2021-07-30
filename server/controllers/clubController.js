@@ -24,7 +24,6 @@ export const getClubListByIds = async (req, res) => {
       }
     });
     const clubList = await Promise.all(clubs);
-    console.log(clubList);
     res.status(200).json({
       success: true,
       data: clubList

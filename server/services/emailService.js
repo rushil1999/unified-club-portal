@@ -47,7 +47,6 @@ export const sendEmail = mailOptions => {
     user: 'rushil.s@ahduni.edu.in',
     pass: process.env.PASSWORD,
   };
-  console.log(auth);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth

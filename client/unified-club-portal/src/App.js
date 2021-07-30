@@ -12,6 +12,8 @@ import ClubData from './pages/ClubData';
 import EventForm from './pages/EventForm';
 import EventData from './pages/EventData';
 import UserEvents from './pages/UserEvents';
+import LandingPage from './pages/LandingPage';
+
 
 function App() {
   return (
@@ -19,6 +21,11 @@ function App() {
       <ProvideAuth>
         <Router>
           <Switch>
+          <Route
+              path='/'
+              exact
+              component={LandingPage}>
+            </Route>
             <Route
               path='/signup'
               exact
