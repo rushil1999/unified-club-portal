@@ -31,6 +31,11 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
+    backgroundColor: '#eff',
+    border: '1px solid #ddd',
+    padding: '20px',
+    boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+    borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
