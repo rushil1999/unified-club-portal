@@ -247,7 +247,7 @@ const EventData = props => {
             container
             item
             className={classes.memberSection}
-            justifyContent="start"
+            justifyContent="center"
           >
             <Grid item xs={12}>
               <UserList ids={eventState.participants} titleText="Participants" emptyText="Register Now!" />

@@ -102,7 +102,7 @@ export default function SignUp() {
       setAuthState(true);
       window.alert("User Creation Successfull");
       setTimeout(() => {
-        history.push("/clubs/all");
+        history.push("/signin");
       }, 500);
     }
   };

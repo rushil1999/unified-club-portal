@@ -26,8 +26,8 @@ export const signup = async (req, res) => {
           const savedUser = await newUser.save();
           if (savedUser) {
             let access_token = createJWT(
-              user.email,
-              user._id,
+              newUser.email,
+              newUser._id,
               3600
             );
             const tokenVerified = verifyToken(access_token);
