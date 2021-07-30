@@ -7,8 +7,8 @@ import { createJWT, verifyToken } from '../services/authenticationService';
 export const signup = async (req, res) => {
   let { name, email, password, contact } = req.body;
   try {
-    const existingUser = await User.findOne({ email: email });
-    if (existingUser) {
+    const existingUser = await User.find({ email: email });
+    if (existingUser.legnth > 0) {
       return res.status(422).json({ errors: [{ user: "email already exists" }] });
     }
     else {
@@ -26,8 +26,8 @@ export const signup = async (req, res) => {
           const savedUser = await newUser.save();
           if (savedUser) {
             let access_token = createJWT(
-              user.email,
-              user._id,
+              newUser.email,
+              newUser['_id'],
               3600
             );
             const tokenVerified = verifyToken(access_token);
@@ -49,7 +49,7 @@ export const signup = async (req, res) => {
           }
         })
         .catch(err => {
-          console.log('Catch', err.message);
+          console.log('Catch123', err.message);
           res.status(500).json({ error: [err.message] });
         })
     }
