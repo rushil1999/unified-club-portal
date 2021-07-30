@@ -7,34 +7,23 @@ import '../styles/styles.css';
 const LandingPage = props => {
   return (
     <div id="main">
-      <Typography variant="h3" align="center" style={{ color: "#2196F3" }}>
+      <Typography variant="h1" align="center" style={{ color: "black" }}>
         Unified Club Portal
       </Typography>
-      <Typography variant="h5" align="center" style={{ marginTop: "40px" }}>
+      <Typography variant="h5" align="center" style={{ marginTop: "10px" }}>
         Simple tool to organize clubs and events
       </Typography>
-      <div style={{ width: "50%", margin: "0 auto", marginTop: "40px" }}>
-        <Grid container spacing={2} align="center" >
-          <Grid item xs={4} >
-
-          </Grid>
-          <Grid item xs={2} >
-            <Button variant="raised" color="primary" style={{ backgroundColor: "#2196F3" }}>
-              Login
-            </Button>
-          </Grid>
-
-          <Grid item xs={2}>
-            <Button variant="raised" color="primary" style={{ backgroundColor: "#2196F3" }}>
-              Signup
-            </Button>
-          </Grid>
-          <Grid item xs={4} >
-
-          </Grid>
+      <Grid container spacing={2} direction="column" justifyContent="center" alignItems="center">
+        <Grid item>
+          <Button variant="contained" color="primary" style={{ backgroundColor: "black", margin: '5px' }} href="/signin">
+            Sign In
+          </Button>
+          <Button variant="contained" color="primary" style={{ backgroundColor: "darkgreen", margin: '5px' }} href="/signup">
+            Sign Up!
+          </Button>
         </Grid>
-      </div>
-
+        
+      </Grid>
     </div>
   );
 }

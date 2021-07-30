@@ -25,13 +25,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: '10px',
   },
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: '0 8px',
+    padding: '0px',
     ...theme.mixins.toolbar,
   },
   appBar: {
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: 'black',
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 0,
   },
   menuButtonHidden: {
     display: 'none',
@@ -66,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor: '#eee',
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -77,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9),
     },
+    backgroundColor: '#fff',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -88,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    
   },
   paper: {
     padding: theme.spacing(2),
@@ -107,7 +109,7 @@ export default function Dashboard(props) {
   const { setAuthState, setUser, user, loading } = contextValue;
   const { component: Component } = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -139,14 +141,14 @@ export default function Dashboard(props) {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
-                  Dashboard
+                <Typography component="h4" variant="h4" color="inherit" noWrap className={classes.title}>
+                  Unified Club Portal
                 </Typography>
 
                 <IconButton color="inherit">
                   <PersonIcon />
-                  <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                    {user.name}
+                  <Typography component="h6" variant="h6" color="inherit" noWrap className={classes.title}>
+                    Hello, {user.name}!
                   </Typography>
 
                 </IconButton>

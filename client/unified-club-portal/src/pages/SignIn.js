@@ -31,13 +31,18 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
+    backgroundColor: '#fff',
+    border: '1px solid #ddd',
+    padding: '20px',
+    boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+    borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: 'black',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -45,6 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: 'black',
+    "&:hover" : { backgroundColor: "darkgreen"}
   },
 }));
 
