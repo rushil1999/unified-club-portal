@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset'
   },
   root: {
-    margin: 'auto',
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
   },
   inline: {
     display: 'inline',
@@ -78,8 +80,9 @@ const EventList = props => {
                 {eventList.map(event => {
                   return (
 
-                    <ListItem alignItems="flex-start" key={event['_id']}>
+                    <ListItem key={event['_id']}>
                       <Button
+                        style={{width: '100%'}}
                         onClick={() => { redirectToEventData(event['_id']) }}
                       >
                         <EventCard event={event} />
