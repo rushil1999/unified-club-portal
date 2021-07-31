@@ -44,7 +44,7 @@ export const sendEventRegisterationMail = async (event, user) => {
 
 export const sendEmail = mailOptions => {
   const auth = {
-    user: 'rushil.s@ahduni.edu.in',
+    user: process.env.USER,
     pass: process.env.PASSWORD,
   };
   const transporter = nodemailer.createTransport({
