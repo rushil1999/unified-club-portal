@@ -29,27 +29,11 @@ const connectionParams = {
 app.use(cors());
 
 // For build folder
-app.use(express.static(path.join(__dirname, "client", "build")))
+// app.use(express.static(path.join(__dirname, "client", "build")))
 
 //using boody-parser to parse incoming request bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-app.use('/public/uploads',  express.static(__dirname + '/public/uploads'));
-
-//setting primary routes
-app.use('/clubs', clubRouter);
-app.use('/club', clubRouter);
-app.use('/auth', authRouter);
-app.use('/user', userRouter);
-app.use('/event', eventRouter);
-app.use('/events', eventRouter);
-app.use('/resource', resourceRouter);
-
-// Catchall route handler 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-})
 
 // Establishing connection with db
 mongoose.connect(CONNECTION_URL, connectionParams)
@@ -64,3 +48,14 @@ mongoose.connect(CONNECTION_URL, connectionParams)
   })
 
 mongoose.set('useFindAndModify', false);
+
+app.use('/public/uploads',  express.static(__dirname + '/public/uploads'));
+
+//setting primary routes
+app.use('/clubs', clubRouter);
+app.use('/club', clubRouter);
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
+app.use('/event', eventRouter);
+app.use('/events', eventRouter);
+app.use('/resource', resourceRouter);

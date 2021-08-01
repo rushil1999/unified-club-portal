@@ -15,16 +15,16 @@ const useStyles = makeStyles({
     display: "flex",
     border: "1px solid #ddd",
     margin: "10px 5px",
-    boxShadow: "none",
+    justifyContent: "space-between"
   },
   cardDetails: {
     flex: 1,
-    display: "flex",
     textAlign: "left",
+    textTransform: 'none',
     justifyContent: "flex-start",
   },
   cardMedia: {
-    width: 250,
+    width: 200,
   },
   cardAction: {
     "&hover": {
@@ -58,7 +58,7 @@ export default function FeaturedPost(props) {
   const toDateString = `${toDate.getDate()}/${toDate.getMonth()}/${toDate.getFullYear()} ${toDate.getHours()}:${toDate.getMinutes()} `;
 
   return (
-    <Grid item>
+    <Grid item style={{width: '100%'}}>
       <Card className={classes.card}>
         <div className={classes.cardDetails}>
           <CardContent>
@@ -66,7 +66,7 @@ export default function FeaturedPost(props) {
               {name}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              {startDateString} to {toDateString}
+              <b>{startDateString} to {toDateString}</b>
             </Typography>
             <Typography variant="subtitle1" paragraph>
               {desc}
