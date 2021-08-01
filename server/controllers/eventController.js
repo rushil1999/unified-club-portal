@@ -141,7 +141,7 @@ export const registerUserToEvent = async (req, res) => {
           const emailReponse = sendEventRegisterationMail(event, user);
           res.status(200).json({
             success: true,
-            data: event
+            data: { event, user },
           })
         }
 

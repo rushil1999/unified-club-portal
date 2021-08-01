@@ -19,6 +19,7 @@ import EditSharpIcon from "@material-ui/icons/EditSharp";
 import { AuthContext } from "../components/auth/ProvideAuth";
 import { useHistory } from "react-router";
 import MessageComponent from "../components/MessageComponent";
+import { updateUserInLocalStorage } from "../services/authServices";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 
 const ClubData = props => {
   const contextValue = useContext(AuthContext);
-  const { user } = contextValue;
+  const { user, setUser } = contextValue;
   let { id } = useParams();
   const classes = useStyles();
   const history = useHistory();
@@ -85,9 +86,11 @@ const ClubData = props => {
   const enrollHandler = async () => {
     const response = await enrollMemberInClub(user["_id"], id);
     if (response.status === 200) {
-      setClubState(response.data.data);
+      setClubState(response.data.data.club);
       setMessage("Enrolled Successfully");
       setMessagePopupState(true);
+      updateUserInLocalStorage(response.data.data.user);
+      setUser(response.data.data.user);
     } else if (response.status === 500) {
       console.log(response.data.errors);
       setMessage("Inernal Server Error");
@@ -104,9 +107,11 @@ const ClubData = props => {
     const user = JSON.parse(userObj);
     const response = await removeMemberFromClub(user["_id"], id);
     if (response.status === 200) {
-      setClubState(response.data.data);
+      setClubState(response.data.data.club);
       setMessage("You have left the club");
       setMessagePopupState(true);
+      updateUserInLocalStorage(response.data.data.user);
+      setUser(response.data.data.user);
     } else if (response.status === 500) {
       console.log(response.data.errors);
       setMessage("Inernal Server Error");

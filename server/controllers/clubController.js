@@ -96,7 +96,7 @@ export const enrollMemberInClub = async (req, res) => {
         user.registeredClubs.push(clubId);
         await user.save();
         await club.save();
-        res.status(200).json({ success: true, data: club });
+        res.status(200).json({ success: true, data: {club, user} });
       }
     }
   }
@@ -127,7 +127,7 @@ export const removeMemberFromClub = async (req, res) => {
         await user.save();
       }
     }
-    res.status(200).json({ success: true, data: club });
+    res.status(200).json({ success: true, data: {club, user} });
   }
   catch (err) {
     console.log('Catch', err.message);

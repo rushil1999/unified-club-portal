@@ -22,6 +22,7 @@ import RatingComponent from "../components/event/RatingComponent";
 import Card from "@material-ui/core/Card";
 import MessageComponent from "../components/MessageComponent";
 import EventFeedbackList from "../components/event/EventFeedbackList";
+import { updateUserInLocalStorage } from "../services/authServices";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,7 +88,7 @@ const EventData = props => {
   const [feedbackComponentState, setFeedbackComponentState] = useState(false);
   const [messagePopupState, setMessagePopupState] = useState(false);
   const [message, setMessage] = useState("");
-  const { user } = contextValue;
+  const { user, setUser } = contextValue;
 
   useEffect(() => {
     getEventDetails();
@@ -97,9 +98,11 @@ const EventData = props => {
   const registerUserToEvent = async () => {
     const response = await registerUser(user["_id"], eventState["_id"]);
     if (response.status === 200) {
-      setEventState(response.data.data);
+      setEventState(response.data.data.event);
       setMessage("Registered in Event");
       setMessagePopupState(true);
+      updateUserInLocalStorage(response.data.data.user);
+      setUser(response.data.data.user);
     } else if (response.status === 412) {
       console.log(response.data.message);
       setMessage(response.data.message);
